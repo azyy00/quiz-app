@@ -8,7 +8,7 @@ import Leaderboard from "@/components/Leaderboard";
 import Confetti from "@/components/Confetti";
 import Champion from "@/components/Champion";
 import Avatar from "@/components/Avatar";
-import { TrophyIcon } from "@/components/icons";
+import { CheckSmallIcon, CopyIcon, TrophyIcon } from "@/components/icons";
 import type { Question } from "@/lib/types";
 
 const OPTION_COLORS = [
@@ -28,6 +28,7 @@ export default function HostScreen({
   const { game, players } = useGame(gameId);
   const [answerCount, setAnswerCount] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [copied, setCopied] = useState(false);
   const autoRevealed = useRef<number | null>(null);
 
   const question =
@@ -156,11 +157,23 @@ export default function HostScreen({
           Players join at
         </p>
         <button
-          onClick={() => navigator.clipboard?.writeText(joinUrl)}
-          title="Click to copy link"
-          className="rounded-2xl bg-card px-6 py-3 font-bold text-brand shadow hover:bg-zinc-800"
+          onClick={() => {
+            navigator.clipboard?.writeText(joinUrl).then(() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            });
+          }}
+          title={copied ? "Copied!" : "Click to copy link"}
+          className={`flex items-center gap-2 rounded-2xl bg-card px-6 py-3 font-bold shadow transition-colors ${
+            copied ? "text-neon" : "text-brand hover:text-neon-pink"
+          }`}
         >
-          {joinUrl} 📋
+          {joinUrl}
+          {copied ? (
+            <CheckSmallIcon className="pop-in h-5 w-5" />
+          ) : (
+            <CopyIcon className="h-5 w-5" />
+          )}
         </button>
         <div className="rounded-3xl bg-brand px-10 py-6 text-center shadow-xl">
           <p className="text-sm font-bold uppercase text-blue-200">
