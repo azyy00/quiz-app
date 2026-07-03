@@ -78,17 +78,23 @@ export default function HostScreen({
     }
   }, [game, question, remaining, advance]);
 
-  // Auto-advance to the next question 15s after results appear.
-  // The host can still click the button to skip ahead.
+  // Auto-advance after results appear: 15s between questions, but only a
+  // short 3s beat after the last question — no reason to make the winner
+  // wait for their podium. The host can still click to skip ahead.
   const AUTO_NEXT_SECONDS = 15;
+  const FINAL_RESULTS_SECONDS = 3;
   const [autoNextLeft, setAutoNextLeft] = useState(AUTO_NEXT_SECONDS);
   useEffect(() => {
     if (game?.status !== "reveal") return;
-    setAutoNextLeft(AUTO_NEXT_SECONDS);
+    const secs =
+      game.current_question_index >= questions.length - 1
+        ? FINAL_RESULTS_SECONDS
+        : AUTO_NEXT_SECONDS;
+    setAutoNextLeft(secs);
     const startedMs = Date.now();
     let fired = false;
     const id = setInterval(() => {
-      const left = AUTO_NEXT_SECONDS - (Date.now() - startedMs) / 1000;
+      const left = secs - (Date.now() - startedMs) / 1000;
       setAutoNextLeft(Math.max(0, Math.ceil(left)));
       if (left <= 0 && !fired) {
         fired = true;
@@ -97,7 +103,7 @@ export default function HostScreen({
       }
     }, 250);
     return () => clearInterval(id);
-  }, [game?.status, game?.current_question_index, advance]);
+  }, [game?.status, game?.current_question_index, questions.length, advance]);
 
   // Live answer count for the current question
   useEffect(() => {

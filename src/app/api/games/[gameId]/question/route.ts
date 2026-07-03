@@ -34,6 +34,11 @@ export async function GET(
 
   const revealed = game.status === "reveal" || game.status === "finished";
 
+  const { count: totalQuestions } = await admin
+    .from("questions")
+    .select("*", { count: "exact", head: true })
+    .eq("quiz_id", game.quiz_id);
+
   let myAnswer = null;
   if (revealed && playerId) {
     const { data } = await admin
@@ -57,6 +62,7 @@ export async function GET(
     },
     started_at: game.question_started_at,
     status: game.status,
+    total: totalQuestions ?? 0,
     myAnswer,
   });
 }

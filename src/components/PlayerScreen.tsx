@@ -18,6 +18,7 @@ interface QuestionPayload {
   question: PublicQuestion & { correct_index?: number };
   started_at: string | null;
   status: string;
+  total: number;
   myAnswer: {
     answer_index: number;
     is_correct: boolean;
@@ -210,6 +211,22 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
               </p>
             </>
           )
+        ) : chosen !== null ? (
+          <>
+            <div className="text-6xl">⏱</div>
+            <h1 className="text-3xl font-black text-amber-600">
+              Too late!
+            </h1>
+            <p className="font-bold text-slate-500">
+              Your answer arrived after time ran out, so it didn&apos;t count.
+            </p>
+            <p className="font-bold text-slate-500">
+              Correct answer:{" "}
+              <span className="text-slate-900">
+                {q.options[q.correct_index ?? 0]}
+              </span>
+            </p>
+          </>
         ) : (
           <>
             <div className="text-6xl">⏰</div>
@@ -234,9 +251,11 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           <Leaderboard players={players} highlightId={playerId} limit={5} />
         </div>
         <p className="text-sm font-bold text-slate-400">
-          {autoNextLeft > 0
-            ? `Next question in ${autoNextLeft}s…`
-            : "Get ready…"}
+          {q.order_index >= payload.total - 1
+            ? "🏆 Final results coming up…"
+            : autoNextLeft > 0
+              ? `Next question in ${autoNextLeft}s…`
+              : "Get ready…"}
         </p>
       </main>
     );
@@ -263,16 +282,25 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
 
       {answered ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-          <div className="text-5xl">🤞</div>
-          <p className="text-xl font-black">Answer locked in!</p>
-          {submitError && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600">
-              {submitError}
-            </p>
+          {submitError ? (
+            <>
+              <div className="text-5xl">⚠️</div>
+              <p className="text-xl font-black text-amber-600">
+                Answer didn&apos;t count
+              </p>
+              <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-700">
+                {submitError}
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="text-5xl">🤞</div>
+              <p className="text-xl font-black">Answer locked in!</p>
+              <p className="font-bold text-slate-500">
+                Waiting for everyone else…
+              </p>
+            </>
           )}
-          <p className="font-bold text-slate-500">
-            Waiting for everyone else…
-          </p>
         </div>
       ) : remaining <= 0 ? (
         <p className="flex-1 content-center text-center text-xl font-black text-slate-500">

@@ -57,8 +57,8 @@ export async function POST(
 
   const elapsedSec =
     (Date.now() - new Date(game.question_started_at).getTime()) / 1000;
-  // 1s grace for network latency
-  if (elapsedSec > question.time_limit + 1) {
+  // 2s grace for network latency
+  if (elapsedSec > question.time_limit + 2) {
     return NextResponse.json({ error: "Time is up!" }, { status: 409 });
   }
 
