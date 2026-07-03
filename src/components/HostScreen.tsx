@@ -69,6 +69,27 @@ export default function HostScreen({
     }
   }, [game, question, remaining, advance]);
 
+  // Auto-advance to the next question 15s after results appear.
+  // The host can still click the button to skip ahead.
+  const AUTO_NEXT_SECONDS = 15;
+  const [autoNextLeft, setAutoNextLeft] = useState(AUTO_NEXT_SECONDS);
+  useEffect(() => {
+    if (game?.status !== "reveal") return;
+    setAutoNextLeft(AUTO_NEXT_SECONDS);
+    const startedMs = Date.now();
+    let fired = false;
+    const id = setInterval(() => {
+      const left = AUTO_NEXT_SECONDS - (Date.now() - startedMs) / 1000;
+      setAutoNextLeft(Math.max(0, Math.ceil(left)));
+      if (left <= 0 && !fired) {
+        fired = true;
+        clearInterval(id);
+        advance("next");
+      }
+    }, 250);
+    return () => clearInterval(id);
+  }, [game?.status, game?.current_question_index, advance]);
+
   // Live answer count for the current question
   useEffect(() => {
     if (!question || game?.status !== "question") {
@@ -254,7 +275,9 @@ export default function HostScreen({
             disabled={busy}
             className="rounded-full bg-emerald-500 px-8 py-3 text-lg font-black text-white hover:bg-emerald-600 disabled:opacity-50"
           >
-            {isLast ? "Show final results 🏆" : "Next question →"}
+            {isLast
+              ? `Final results in ${autoNextLeft}s 🏆 (tap to skip)`
+              : `Next question in ${autoNextLeft}s → (tap to skip)`}
           </button>
         )}
       </div>
