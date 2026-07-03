@@ -35,7 +35,7 @@ export default function StartGameButton({
       onClick={hostGame}
       disabled={disabled || loading}
       title={disabled ? "Add at least one question first" : undefined}
-      className="rounded-full bg-neon px-4 py-2 text-sm font-extrabold text-black hover:bg-neon-pink hover:text-white disabled:opacity-40"
+      className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-extrabold text-white hover:bg-emerald-600 disabled:opacity-40"
     >
       {loading ? "Starting…" : "Host live"}
     </button>

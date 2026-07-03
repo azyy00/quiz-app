@@ -234,7 +234,7 @@ export default function QuizEditor({
                 key={oi}
                 className={`flex items-center gap-2 rounded-xl border-2 px-3 py-2 ${
                   q.correct_index === oi
-                    ? "border-neon bg-emerald-950"
+                    ? "border-emerald-500 bg-emerald-950"
                     : "border-zinc-700"
                 }`}
               >
@@ -244,7 +244,7 @@ export default function QuizEditor({
                   checked={q.correct_index === oi}
                   onChange={() => updateQuestion(i, { correct_index: oi })}
                   title="Mark as correct answer"
-                  className="accent-[#00FF85]"
+                  className="accent-emerald-500"
                 />
                 <input
                   value={opt}

@@ -31,8 +31,8 @@ export default function Champion({ name }: { name: string }) {
         ))}
 
         {/* podium */}
-        <rect x="60" y="150" width="100" height="55" rx="6" fill="#1E90FF" />
-        <rect x="60" y="150" width="100" height="10" rx="5" fill="#63B8FF" />
+        <rect x="60" y="150" width="100" height="55" rx="6" fill="#6d28d9" />
+        <rect x="60" y="150" width="100" height="10" rx="5" fill="#8b5cf6" />
         <text
           x="110"
           y="190"

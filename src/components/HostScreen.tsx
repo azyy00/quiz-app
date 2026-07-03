@@ -12,10 +12,10 @@ import { CheckSmallIcon, CopyIcon, TrophyIcon } from "@/components/icons";
 import type { Question } from "@/lib/types";
 
 const OPTION_COLORS = [
-  "bg-[#FF0099] text-white",
-  "bg-[#1E90FF] text-white",
+  "bg-rose-500 text-white",
+  "bg-sky-500 text-white",
   "bg-amber-400 text-black",
-  "bg-[#00FF85] text-black",
+  "bg-emerald-500 text-white",
 ];
 
 export default function HostScreen({
@@ -165,7 +165,7 @@ export default function HostScreen({
           }}
           title={copied ? "Copied!" : "Click to copy link"}
           className={`flex items-center gap-2 rounded-2xl bg-card px-6 py-3 font-bold shadow transition-colors ${
-            copied ? "text-neon" : "text-brand hover:text-neon-pink"
+            copied ? "text-emerald-400" : "text-brand hover:text-white"
           }`}
         >
           {joinUrl}
@@ -176,7 +176,7 @@ export default function HostScreen({
           )}
         </button>
         <div className="rounded-3xl bg-brand px-10 py-6 text-center shadow-xl">
-          <p className="text-sm font-bold uppercase text-blue-200">
+          <p className="text-sm font-bold uppercase text-violet-200">
             Game code
           </p>
           <p className="text-6xl font-black tracking-widest text-white">
@@ -210,7 +210,7 @@ export default function HostScreen({
         <button
           onClick={() => advance("start")}
           disabled={busy || players.length === 0}
-          className="mt-auto rounded-full bg-neon px-10 py-4 text-xl font-black text-black shadow-lg hover:bg-neon-pink hover:text-white disabled:opacity-40"
+          className="mt-auto rounded-full bg-emerald-500 px-10 py-4 text-xl font-black text-white shadow-lg hover:bg-emerald-600 disabled:opacity-40"
         >
           Start quiz →
         </button>
@@ -318,7 +318,7 @@ export default function HostScreen({
           <button
             onClick={() => advance("next")}
             disabled={busy}
-            className="rounded-full bg-neon px-8 py-3 text-lg font-black text-black hover:bg-neon-pink hover:text-white disabled:opacity-50"
+            className="rounded-full bg-emerald-500 px-8 py-3 text-lg font-black text-white hover:bg-emerald-600 disabled:opacity-50"
           >
             {isLast
               ? `Final results in ${autoNextLeft}s 🏆 (tap to skip)`

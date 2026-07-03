@@ -18,10 +18,10 @@ import {
 import type { PublicQuestion } from "@/lib/types";
 
 const OPTION_COLORS = [
-  "bg-[#FF0099] text-white hover:brightness-110",
-  "bg-[#1E90FF] text-white hover:brightness-110",
+  "bg-rose-500 text-white hover:brightness-110",
+  "bg-sky-500 text-white hover:brightness-110",
   "bg-amber-400 text-black hover:brightness-110",
-  "bg-[#00FF85] text-black hover:brightness-110",
+  "bg-emerald-500 text-white hover:brightness-110",
 ];
 
 interface QuestionPayload {
@@ -224,7 +224,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           mine.is_correct ? (
             <>
               <CheckIcon className="pop-in h-24 w-24" />
-              <h1 className="text-3xl font-black text-neon">Correct!</h1>
+              <h1 className="text-3xl font-black text-emerald-400">Correct!</h1>
               <p className="text-2xl font-extrabold">
                 +{mine.points_awarded} points
               </p>

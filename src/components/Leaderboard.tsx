@@ -95,7 +95,7 @@ export default function Leaderboard({
               )}
             </span>
             {justScored && (
-              <span className="animate-pulse text-sm font-black text-neon">
+              <span className="animate-pulse text-sm font-black text-emerald-400">
                 ▲
               </span>
             )}
