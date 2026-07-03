@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import Brand from "@/components/Brand";
 
 async function joinByCode(formData: FormData) {
   "use server";
@@ -17,11 +18,7 @@ export default async function LandingPage() {
   return (
     <main className="min-h-screen flex flex-col">
       <header className="flex items-center justify-between px-6 py-4">
-        <span className="flex items-center gap-2 text-2xl font-black text-brand">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="QuizBlitz logo" className="h-8 w-8" />
-          QuizBlitz
-        </span>
+        <Brand />
         <nav className="flex gap-3">
           {user ? (
             <Link

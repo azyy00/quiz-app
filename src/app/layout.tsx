@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "QuizBlitz — Realtime Quiz Game",
+  title: "AzyQuiz — Realtime Quiz Game",
   description: "Create quizzes, share a link, and play live with friends.",
 };
 

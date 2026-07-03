@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import StartGameButton from "@/components/StartGameButton";
+import Brand from "@/components/Brand";
 import type { Quiz } from "@/lib/types";
 
 export default async function DashboardPage() {
@@ -19,13 +20,8 @@ export default async function DashboardPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
       <header className="mb-8 flex items-center justify-between">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-2xl font-black text-brand"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="QuizBlitz logo" className="h-8 w-8" />
-          QuizBlitz
+        <Link href="/">
+          <Brand />
         </Link>
         <form action="/auth/signout" method="post">
           <button className="text-sm font-bold text-slate-500 hover:text-slate-700">
