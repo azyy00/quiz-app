@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useCountdown, useGame } from "@/lib/useGame";
+import { useCountdown, useGame, useServerTimeOffset } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
 import Confetti from "@/components/Confetti";
 import Champion from "@/components/Champion";
@@ -107,9 +107,11 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
     return () => clearInterval(id);
   }, [game?.status, game?.current_question_index]);
 
+  const clockOffset = useServerTimeOffset();
   const remaining = useCountdown(
     game?.question_started_at ?? null,
-    payload?.question.time_limit ?? 30
+    payload?.question.time_limit ?? 30,
+    clockOffset
   );
 
   const submit = useCallback(

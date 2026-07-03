@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { useCountdown, useGame } from "@/lib/useGame";
+import { useCountdown, useGame, useServerTimeOffset } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
 import Confetti from "@/components/Confetti";
 import Champion from "@/components/Champion";
@@ -35,9 +35,11 @@ export default function HostScreen({
       ? questions[game.current_question_index]
       : null;
 
+  const clockOffset = useServerTimeOffset();
   const remaining = useCountdown(
     game?.question_started_at ?? null,
-    question?.time_limit ?? 30
+    question?.time_limit ?? 30,
+    clockOffset
   );
 
   const advance = useCallback(
@@ -74,12 +76,13 @@ export default function HostScreen({
       return;
     }
     const elapsedSec =
-      (Date.now() - new Date(game.question_started_at).getTime()) / 1000;
+      (Date.now() + clockOffset - new Date(game.question_started_at).getTime()) /
+      1000;
     if (elapsedSec >= question.time_limit) {
       autoRevealed.current = game.current_question_index;
       advance("reveal");
     }
-  }, [game, question, remaining, advance]);
+  }, [game, question, remaining, clockOffset, advance]);
 
   // Auto-advance after results appear: 15s between questions, but only a
   // short 3s beat after the last question — no reason to make the winner

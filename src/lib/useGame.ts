@@ -82,13 +82,48 @@ export function useGame(gameId: string) {
   return { game, players };
 }
 
+/**
+ * Difference between the server clock and this device's clock, in ms
+ * (positive = device is behind). Measured once with a latency-adjusted
+ * ping so countdowns match what the server actually enforces, even on
+ * devices with a skewed clock.
+ */
+export function useServerTimeOffset() {
+  const [offset, setOffset] = useState(0);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const t0 = Date.now();
+        const res = await fetch("/api/time", { cache: "no-store" });
+        const { now } = await res.json();
+        const t1 = Date.now();
+        if (!cancelled && typeof now === "number") {
+          setOffset(now + (t1 - t0) / 2 - t1);
+        }
+      } catch {
+        // fall back to the local clock
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return offset;
+}
+
 /** Countdown driven by the server timestamp, so all clients agree. */
-export function useCountdown(startedAt: string | null, timeLimit: number) {
+export function useCountdown(
+  startedAt: string | null,
+  timeLimit: number,
+  offsetMs = 0
+) {
   const compute = () =>
     startedAt
       ? Math.max(
           0,
-          timeLimit - (Date.now() - new Date(startedAt).getTime()) / 1000
+          timeLimit -
+            (Date.now() + offsetMs - new Date(startedAt).getTime()) / 1000
         )
       : timeLimit;
 
@@ -106,13 +141,13 @@ export function useCountdown(startedAt: string | null, timeLimit: number) {
     if (!startedAt) return;
     const startMs = new Date(startedAt).getTime();
     const tick = () => {
-      const elapsed = (Date.now() - startMs) / 1000;
+      const elapsed = (Date.now() + offsetMs - startMs) / 1000;
       setRemaining(Math.max(0, timeLimit - elapsed));
     };
     tick();
     const id = setInterval(tick, 250);
     return () => clearInterval(id);
-  }, [startedAt, timeLimit]);
+  }, [startedAt, timeLimit, offsetMs]);
 
   return remaining;
 }
