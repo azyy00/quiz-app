@@ -1,14 +1,15 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { supabaseUrl } from "@/lib/supabase/url";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = supabaseUrl();
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   // Misconfigured env vars shouldn't take the whole site down —
   // let pages render and surface their own errors instead.
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!url || !supabaseAnonKey) {
     console.error(
       "Supabase env vars missing: check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
     );
@@ -16,7 +17,7 @@ export async function middleware(request: NextRequest) {
   }
 
   const supabase = createServerClient(
-    supabaseUrl,
+    url,
     supabaseAnonKey,
     {
       cookies: {
