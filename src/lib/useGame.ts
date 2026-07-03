@@ -84,7 +84,23 @@ export function useGame(gameId: string) {
 
 /** Countdown driven by the server timestamp, so all clients agree. */
 export function useCountdown(startedAt: string | null, timeLimit: number) {
-  const [remaining, setRemaining] = useState(timeLimit);
+  const compute = () =>
+    startedAt
+      ? Math.max(
+          0,
+          timeLimit - (Date.now() - new Date(startedAt).getTime()) / 1000
+        )
+      : timeLimit;
+
+  const [remaining, setRemaining] = useState(compute);
+
+  // Reset synchronously during render when a new question starts, so
+  // consumers never see the previous question's leftover 0 for a frame.
+  const [prevStartedAt, setPrevStartedAt] = useState(startedAt);
+  if (prevStartedAt !== startedAt) {
+    setPrevStartedAt(startedAt);
+    setRemaining(compute());
+  }
 
   useEffect(() => {
     if (!startedAt) return;

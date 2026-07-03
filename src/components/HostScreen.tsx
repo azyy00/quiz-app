@@ -56,14 +56,22 @@ export default function HostScreen({
     [gameId]
   );
 
-  // Auto-reveal when the timer runs out
+  // Auto-reveal when the timer runs out. Recompute the remaining time
+  // from the server timestamp here rather than trusting the countdown
+  // state: right after advancing to a new question the countdown still
+  // holds the previous question's 0, which would insta-lock the new one.
   useEffect(() => {
     if (
-      game?.status === "question" &&
-      question &&
-      remaining <= 0 &&
-      autoRevealed.current !== game.current_question_index
+      game?.status !== "question" ||
+      !question ||
+      !game.question_started_at ||
+      autoRevealed.current === game.current_question_index
     ) {
+      return;
+    }
+    const elapsedSec =
+      (Date.now() - new Date(game.question_started_at).getTime()) / 1000;
+    if (elapsedSec >= question.time_limit) {
       autoRevealed.current = game.current_question_index;
       advance("reveal");
     }
