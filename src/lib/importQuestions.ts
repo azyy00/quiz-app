@@ -7,7 +7,7 @@
  * - option3/option4 may be left empty (2-option questions like True/False)
  * - correct is 1-based (1 = option1 … 4 = option4)
  * - time_limit (seconds, 5–120) and points (0–2000) are optional;
- *   defaults: 30s / 1000 points
+ *   defaults: 10s / 1000 points
  */
 
 export interface ImportedQuestion {
@@ -116,7 +116,7 @@ export function parseQuestionCsv(text: string): ImportResult {
       text: text_.slice(0, 500),
       options: options.map((o) => o.slice(0, 200)),
       correct_index: correctNum - 1,
-      time_limit: isNaN(tl) ? 30 : clamp(tl, 5, 120),
+      time_limit: isNaN(tl) ? 10 : clamp(tl, 5, 120),
       points: isNaN(pts) ? 1000 : clamp(pts, 0, 2000),
     });
   });

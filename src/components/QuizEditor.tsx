@@ -20,7 +20,7 @@ const emptyQuestion = (): EditableQuestion => ({
   text: "",
   options: ["", "", "", ""],
   correct_index: 0,
-  time_limit: 30,
+  time_limit: 10,
   points: 1000,
 });
 

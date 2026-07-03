@@ -231,14 +231,12 @@ export default function HostScreen({
         </p>
       )}
 
-      {isReveal && (
-        <div>
-          <h2 className="mb-2 text-center font-extrabold text-slate-500">
-            Leaderboard
-          </h2>
-          <Leaderboard players={players} limit={5} />
-        </div>
-      )}
+      <div>
+        <h2 className="mb-2 text-center font-extrabold text-slate-500">
+          {game.status === "question" ? "🏁 Live race" : "Leaderboard"}
+        </h2>
+        <Leaderboard players={players} limit={8} />
+      </div>
 
       <div className="mt-auto flex justify-center gap-3">
         {game.status === "question" && (

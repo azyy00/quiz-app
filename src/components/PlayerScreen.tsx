@@ -207,6 +207,9 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
             #{myRank} · {me.score} pts
           </p>
         )}
+        <div className="w-full">
+          <Leaderboard players={players} highlightId={playerId} limit={5} />
+        </div>
         <p className="text-sm font-bold text-slate-400">
           Waiting for the next question…
         </p>
