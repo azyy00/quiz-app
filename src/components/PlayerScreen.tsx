@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useCountdown, useGame } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
+import Confetti from "@/components/Confetti";
 import type { PublicQuestion } from "@/lib/types";
 
 const OPTION_COLORS = [
@@ -153,6 +154,9 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   if (game.status === "finished") {
     return (
       <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center gap-6 px-4 py-10">
+        {myRank !== null && myRank <= 3 && (
+          <Confetti count={220} duration={4000} />
+        )}
         <h1 className="text-4xl font-black">🏆 Final results</h1>
         {me && myRank && (
           <p className="text-xl font-extrabold">
@@ -182,6 +186,9 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
     const mine = payload.myAnswer;
     return (
       <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-5 px-4 py-10 text-center">
+        {mine?.is_correct && (
+          <Confetti key={game.current_question_index} />
+        )}
         {mine ? (
           mine.is_correct ? (
             <>

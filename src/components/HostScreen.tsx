@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useCountdown, useGame } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
+import Confetti from "@/components/Confetti";
 import type { Question } from "@/lib/types";
 
 const OPTION_COLORS = [
@@ -195,6 +196,7 @@ export default function HostScreen({
   if (game.status === "finished") {
     return (
       <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center gap-6 px-4 py-10">
+        <Confetti count={260} duration={4500} />
         <h1 className="text-4xl font-black">🏆 Final results</h1>
         <Leaderboard players={players} />
         <Link
