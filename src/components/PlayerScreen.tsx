@@ -6,6 +6,7 @@ import { useCountdown, useGame } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
 import Confetti from "@/components/Confetti";
 import Champion from "@/components/Champion";
+import Avatar from "@/components/Avatar";
 import {
   BoltIcon,
   CheckIcon,
@@ -154,7 +155,11 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   if (game.status === "lobby") {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
-        <BoltIcon className="h-16 w-16 animate-bounce" />
+        {me && (
+          <div className="pop-in">
+            <Avatar seed={me.nickname} className="h-24 w-24 shadow-lg" />
+          </div>
+        )}
         <h1 className="text-2xl font-black">You&apos;re in, {me?.nickname}!</h1>
         {me?.is_guest && (
           <span className="rounded-full bg-slate-200 px-3 py-1 text-sm font-bold text-slate-600">

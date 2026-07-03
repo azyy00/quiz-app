@@ -121,3 +121,8 @@ src/
 - Scores are computed server-side from server timestamps.
 - The correct answer index is stripped from question payloads until reveal.
 - Duplicate answers are blocked by a database unique constraint.
+
+## Credits
+
+- Player avatars: [DiceBear](https://www.dicebear.com) "bottts" style by
+  Pablo Stanley — free for personal and commercial use, generated locally.

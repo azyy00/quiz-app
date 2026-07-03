@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { MedalIcon } from "@/components/icons";
+import Avatar from "@/components/Avatar";
 import type { Player } from "@/lib/types";
 
 const ROW_H = 56;
@@ -80,6 +81,7 @@ export default function Leaderboard({
                 i + 1
               )}
             </span>
+            <Avatar seed={p.nickname} className="h-9 w-9" />
             <span className="flex-1 truncate font-extrabold">
               {p.nickname}
               {p.is_guest && (

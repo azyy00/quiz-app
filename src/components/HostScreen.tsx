@@ -7,6 +7,7 @@ import { useCountdown, useGame } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
 import Confetti from "@/components/Confetti";
 import Champion from "@/components/Champion";
+import Avatar from "@/components/Avatar";
 import { TrophyIcon } from "@/components/icons";
 import type { Question } from "@/lib/types";
 
@@ -176,11 +177,12 @@ export default function HostScreen({
             {players.map((p) => (
               <span
                 key={p.id}
-                className="rounded-full bg-white px-4 py-2 font-bold shadow"
+                className="flex items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-4 font-bold shadow"
               >
+                <Avatar seed={p.nickname} className="h-8 w-8" />
                 {p.nickname}
                 {p.is_guest && (
-                  <span className="ml-1.5 text-xs font-bold text-slate-400">
+                  <span className="ml-1 text-xs font-bold text-slate-400">
                     Guest
                   </span>
                 )}

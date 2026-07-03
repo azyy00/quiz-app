@@ -1,12 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
+import { avatarUri } from "@/components/Avatar";
+
 /**
- * Legendary champion scene for 1st place: a crowned, caped character
- * standing on the #1 podium waving one arm, with sparkles.
- * Animations are pure CSS (see globals.css: champ-wave, champ-bob,
- * sparkle-twinkle, pop-in).
+ * Legendary champion scene for 1st place: the winner's own avatar,
+ * crowned and caped, standing on the #1 podium waving one arm, with
+ * sparkles. Animations are pure CSS (see globals.css: champ-wave,
+ * champ-bob, sparkle-twinkle, pop-in).
  */
 export default function Champion({ name }: { name: string }) {
+  const face = useMemo(() => avatarUri(name), [name]);
   return (
     <div className="pop-in flex flex-col items-center">
       <svg viewBox="0 0 220 210" className="h-56 w-auto" aria-hidden>
@@ -70,20 +74,12 @@ export default function Champion({ name }: { name: string }) {
             <rect x="122" y="66" width="9" height="34" rx="4.5" fill="#ef4444" />
             <circle cx="126.5" cy="64" r="6" fill="#fcd34d" />
           </g>
-          {/* head */}
-          <circle cx="110" cy="70" r="17" fill="#fcd34d" />
-          <circle cx="104" cy="68" r="2.2" fill="#1e293b" />
-          <circle cx="116" cy="68" r="2.2" fill="#1e293b" />
-          <path
-            d="M103 76 Q110 82 117 76"
-            fill="none"
-            stroke="#1e293b"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
+          {/* head: the winner's own avatar */}
+          <circle cx="110" cy="70" r="20" fill="#fff" stroke="#e2e8f0" strokeWidth="1" />
+          <image href={face} x="92" y="52" width="36" height="36" />
           {/* crown */}
           <path
-            d="M96 54 L100 42 L106 50 L110 38 L114 50 L120 42 L124 54 z"
+            d="M96 50 L100 36 L106 44 L110 32 L114 44 L120 36 L124 50 z"
             fill="#facc15"
             stroke="#d97706"
             strokeWidth="1.5"
