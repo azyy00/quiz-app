@@ -6,6 +6,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useCountdown, useGame } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
 import Confetti from "@/components/Confetti";
+import Champion from "@/components/Champion";
+import { TrophyIcon } from "@/components/icons";
 import type { Question } from "@/lib/types";
 
 const OPTION_COLORS = [
@@ -203,7 +205,16 @@ export default function HostScreen({
     return (
       <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center gap-6 px-4 py-10">
         <Confetti count={260} duration={4500} />
-        <h1 className="text-4xl font-black">🏆 Final results</h1>
+        <h1 className="flex items-center gap-3 text-4xl font-black">
+          <TrophyIcon className="h-10 w-10" /> Final results
+        </h1>
+        {players.length > 0 && (
+          <Champion
+            name={
+              [...players].sort((a, b) => b.score - a.score)[0].nickname
+            }
+          />
+        )}
         <Leaderboard players={players} />
         <Link
           href="/dashboard"

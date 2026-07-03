@@ -1,10 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useCountdown, useGame } from "@/lib/useGame";
 import Leaderboard from "@/components/Leaderboard";
 import Confetti from "@/components/Confetti";
+import Champion from "@/components/Champion";
+import {
+  BoltIcon,
+  CheckIcon,
+  ClockIcon,
+  CrossIcon,
+  FlameIcon,
+  TrophyIcon,
+} from "@/components/icons";
 import type { PublicQuestion } from "@/lib/types";
 
 const OPTION_COLORS = [
@@ -70,6 +79,17 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
     setSubmitError(null);
   }, [game?.current_question_index]);
 
+  // Consecutive-correct streak, counted once per revealed question
+  const [streak, setStreak] = useState(0);
+  const lastCounted = useRef<number | null>(null);
+  useEffect(() => {
+    if (game?.status !== "reveal" || !payload) return;
+    if (payload.question.order_index !== game.current_question_index) return;
+    if (lastCounted.current === game.current_question_index) return;
+    lastCounted.current = game.current_question_index;
+    setStreak((s) => (payload.myAnswer?.is_correct ? s + 1 : 0));
+  }, [game?.status, game?.current_question_index, payload]);
+
   // Mirror the host's 15s auto-next countdown on the results screen.
   // Display-only: the host screen actually advances the game.
   const AUTO_NEXT_SECONDS = 15;
@@ -134,7 +154,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   if (game.status === "lobby") {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
-        <div className="animate-bounce text-5xl">🎮</div>
+        <BoltIcon className="h-16 w-16 animate-bounce" />
         <h1 className="text-2xl font-black">You&apos;re in, {me?.nickname}!</h1>
         {me?.is_guest && (
           <span className="rounded-full bg-slate-200 px-3 py-1 text-sm font-bold text-slate-600">
@@ -158,7 +178,10 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         {myRank !== null && myRank <= 3 && (
           <Confetti count={220} duration={4000} />
         )}
-        <h1 className="text-4xl font-black">🏆 Final results</h1>
+        <h1 className="flex items-center gap-3 text-4xl font-black">
+          <TrophyIcon className="h-10 w-10" /> Final results
+        </h1>
+        {myRank === 1 && me && <Champion name={me.nickname} />}
         {me && myRank && (
           <p className="text-xl font-extrabold">
             You finished <span className="text-brand">#{myRank}</span> with{" "}
@@ -193,15 +216,25 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         {mine ? (
           mine.is_correct ? (
             <>
-              <div className="text-6xl">✅</div>
+              <CheckIcon className="pop-in h-24 w-24" />
               <h1 className="text-3xl font-black text-emerald-600">Correct!</h1>
               <p className="text-2xl font-extrabold">
                 +{mine.points_awarded} points
               </p>
+              {streak >= 2 && (
+                <div className="pop-in flex items-center gap-2 rounded-full bg-orange-50 px-5 py-2 shadow">
+                  <FlameIcon
+                    className={`flame-flicker ${streak >= 5 ? "h-12 w-12" : "h-9 w-9"}`}
+                  />
+                  <span className="text-xl font-black text-orange-600">
+                    {streak} IN A ROW{streak >= 5 ? " — ON FIRE!" : "!"}
+                  </span>
+                </div>
+              )}
             </>
           ) : (
             <>
-              <div className="text-6xl">❌</div>
+              <CrossIcon className="pop-in h-24 w-24" />
               <h1 className="text-3xl font-black text-red-500">Wrong</h1>
               <p className="font-bold text-slate-500">
                 Correct answer:{" "}
@@ -213,7 +246,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           )
         ) : chosen !== null ? (
           <>
-            <div className="text-6xl">⏱</div>
+            <ClockIcon className="pop-in h-24 w-24" />
             <h1 className="text-3xl font-black text-amber-600">
               Too late!
             </h1>
@@ -229,7 +262,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           </>
         ) : (
           <>
-            <div className="text-6xl">⏰</div>
+            <ClockIcon className="pop-in h-24 w-24 opacity-70" />
             <h1 className="text-3xl font-black text-slate-500">
               Time&apos;s up — no answer
             </h1>
@@ -294,7 +327,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
             </>
           ) : (
             <>
-              <div className="text-5xl">🤞</div>
+              <BoltIcon className="h-14 w-14 animate-pulse" />
               <p className="text-xl font-black">Answer locked in!</p>
               <p className="font-bold text-slate-500">
                 Waiting for everyone else…

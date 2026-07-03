@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MedalIcon } from "@/components/icons";
 import type { Player } from "@/lib/types";
 
-const medals = ["🥇", "🥈", "🥉"];
 const ROW_H = 56;
 const GAP = 8;
 
@@ -73,8 +73,12 @@ export default function Leaderboard({
               zIndex: justScored ? 2 : 1,
             }}
           >
-            <span className="w-8 text-center text-lg font-black">
-              {medals[i] ?? i + 1}
+            <span className="flex w-8 items-center justify-center text-lg font-black">
+              {i < 3 ? (
+                <MedalIcon rank={(i + 1) as 1 | 2 | 3} className="h-7 w-7" />
+              ) : (
+                i + 1
+              )}
             </span>
             <span className="flex-1 truncate font-extrabold">
               {p.nickname}
