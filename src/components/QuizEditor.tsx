@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { parseQuestionCsv } from "@/lib/importQuestions";
 import type { Question, Quiz } from "@/lib/types";
 
 interface EditableQuestion {
@@ -47,6 +48,40 @@ export default function QuizEditor({
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [importNotice, setImportNotice] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function importCsv(file: File) {
+    setError(null);
+    setImportNotice(null);
+    const text = await file.text();
+    const { questions: imported, errors } = parseQuestionCsv(text);
+
+    if (imported.length > 0) {
+      const padded = imported.map((q) => ({
+        ...q,
+        // Editor UI always shows 4 option slots
+        options: [...q.options, "", "", ""].slice(0, 4),
+      }));
+      setQuestions((qs) => {
+        // Replace the single untouched starter question instead of appending to it
+        const isPristine =
+          qs.length === 1 &&
+          !qs[0].text.trim() &&
+          qs[0].options.every((o) => !o.trim());
+        return isPristine ? padded : [...qs, ...padded];
+      });
+    }
+
+    const parts = [
+      imported.length > 0
+        ? `Imported ${imported.length} question${imported.length === 1 ? "" : "s"}.`
+        : null,
+      ...errors,
+    ].filter(Boolean);
+    if (errors.length > 0) setError(parts.join(" "));
+    else setImportNotice(parts.join(" "));
+  }
 
   function updateQuestion(i: number, patch: Partial<EditableQuestion>) {
     setQuestions((qs) => qs.map((q, j) => (j === i ? { ...q, ...patch } : q)));
@@ -147,6 +182,11 @@ export default function QuizEditor({
       {error && (
         <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 font-bold text-red-600">
           {error}
+        </p>
+      )}
+      {importNotice && (
+        <p className="mb-4 rounded-xl bg-emerald-50 px-4 py-3 font-bold text-emerald-700">
+          {importNotice}
         </p>
       )}
 
@@ -262,6 +302,49 @@ export default function QuizEditor({
       >
         + Add question
       </button>
+
+      <div className="mt-4 rounded-3xl bg-white p-6 shadow">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-extrabold">Import questions</h2>
+            <p className="text-sm font-semibold text-slate-500">
+              Upload a CSV file — imported questions are added below your
+              existing ones.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <a
+              href="/question-template.csv"
+              download
+              className="rounded-full border-2 border-slate-200 px-4 py-2 text-sm font-bold hover:bg-slate-50"
+            >
+              ⬇ Download template
+            </a>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="rounded-full bg-brand px-4 py-2 text-sm font-extrabold text-white hover:bg-brand-dark"
+            >
+              ⬆ Import CSV
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv,text/csv"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) importCsv(file);
+                e.target.value = "";
+              }}
+            />
+          </div>
+        </div>
+        <p className="mt-3 text-xs font-semibold text-slate-400">
+          Format: question, option1–option4 (option3/4 optional), correct
+          (1–4), time_limit (seconds), points. Works with files exported from
+          Excel or Google Sheets as CSV.
+        </p>
+      </div>
     </main>
   );
 }
