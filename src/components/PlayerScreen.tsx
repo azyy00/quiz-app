@@ -68,6 +68,22 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
     setSubmitError(null);
   }, [game?.current_question_index]);
 
+  // Mirror the host's 15s auto-next countdown on the results screen.
+  // Display-only: the host screen actually advances the game.
+  const AUTO_NEXT_SECONDS = 15;
+  const [autoNextLeft, setAutoNextLeft] = useState(AUTO_NEXT_SECONDS);
+  useEffect(() => {
+    if (game?.status !== "reveal") return;
+    setAutoNextLeft(AUTO_NEXT_SECONDS);
+    const startedMs = Date.now();
+    const id = setInterval(() => {
+      const left = AUTO_NEXT_SECONDS - (Date.now() - startedMs) / 1000;
+      setAutoNextLeft(Math.max(0, Math.ceil(left)));
+      if (left <= 0) clearInterval(id);
+    }, 250);
+    return () => clearInterval(id);
+  }, [game?.status, game?.current_question_index]);
+
   const remaining = useCountdown(
     game?.question_started_at ?? null,
     payload?.question.time_limit ?? 30
@@ -211,7 +227,9 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           <Leaderboard players={players} highlightId={playerId} limit={5} />
         </div>
         <p className="text-sm font-bold text-slate-400">
-          Waiting for the next question…
+          {autoNextLeft > 0
+            ? `Next question in ${autoNextLeft}s…`
+            : "Get ready…"}
         </p>
       </main>
     );
