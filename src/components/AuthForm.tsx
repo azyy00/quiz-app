@@ -59,7 +59,12 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
   return (
     <main className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl">
-        <Link href="/" className="mb-6 block text-center text-2xl font-black text-brand">
+        <Link
+          href="/"
+          className="mb-6 flex items-center justify-center gap-2 text-2xl font-black text-brand"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="QuizBlitz logo" className="h-8 w-8" />
           QuizBlitz
         </Link>
         <h1 className="mb-6 text-center text-xl font-extrabold">
