@@ -24,7 +24,7 @@ export default async function DashboardPage() {
           <Brand />
         </Link>
         <form action="/auth/signout" method="post">
-          <button className="text-sm font-bold text-slate-500 hover:text-slate-700">
+          <button className="text-sm font-bold text-zinc-400 hover:text-white">
             Sign out
           </button>
         </form>
@@ -41,8 +41,8 @@ export default async function DashboardPage() {
       </div>
 
       {!quizzes?.length && (
-        <div className="rounded-3xl bg-white p-10 text-center shadow">
-          <p className="mb-4 text-lg font-bold text-slate-500">
+        <div className="rounded-3xl bg-card p-10 text-center shadow">
+          <p className="mb-4 text-lg font-bold text-zinc-400">
             No quizzes yet. Create your first one!
           </p>
           <Link
@@ -59,11 +59,11 @@ export default async function DashboardPage() {
           (quiz) => (
             <li
               key={quiz.id}
-              className="flex flex-col gap-3 rounded-3xl bg-white p-6 shadow sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 rounded-3xl bg-card p-6 shadow sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <h2 className="text-xl font-extrabold">{quiz.title}</h2>
-                <p className="text-sm font-semibold text-slate-500">
+                <p className="text-sm font-semibold text-zinc-400">
                   {quiz.questions?.[0]?.count ?? 0} question
                   {(quiz.questions?.[0]?.count ?? 0) === 1 ? "" : "s"}
                   {quiz.description ? ` · ${quiz.description}` : ""}
@@ -72,7 +72,7 @@ export default async function DashboardPage() {
               <div className="flex gap-2">
                 <Link
                   href={`/quiz/${quiz.id}/edit`}
-                  className="rounded-full border-2 border-slate-200 px-4 py-2 text-sm font-bold hover:bg-slate-50"
+                  className="rounded-full border-2 border-zinc-700 px-4 py-2 text-sm font-bold hover:bg-zinc-800"
                 >
                   Edit
                 </Link>

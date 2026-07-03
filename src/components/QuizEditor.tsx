@@ -180,42 +180,42 @@ export default function QuizEditor({
       </header>
 
       {error && (
-        <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 font-bold text-red-600">
+        <p className="mb-4 rounded-xl bg-red-950 px-4 py-3 font-bold text-red-400">
           {error}
         </p>
       )}
       {importNotice && (
-        <p className="mb-4 rounded-xl bg-emerald-50 px-4 py-3 font-bold text-emerald-700">
+        <p className="mb-4 rounded-xl bg-emerald-950 px-4 py-3 font-bold text-emerald-300">
           {importNotice}
         </p>
       )}
 
-      <div className="mb-6 rounded-3xl bg-white p-6 shadow">
+      <div className="mb-6 rounded-3xl bg-card p-6 shadow">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Quiz title"
-          className="mb-3 w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-xl font-extrabold outline-none focus:border-brand"
+          className="mb-3 w-full rounded-xl border-2 border-zinc-700 px-4 py-3 text-xl font-extrabold outline-none focus:border-brand"
         />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Description (optional)"
           rows={2}
-          className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 font-semibold outline-none focus:border-brand"
+          className="w-full rounded-xl border-2 border-zinc-700 px-4 py-3 font-semibold outline-none focus:border-brand"
         />
       </div>
 
       {questions.map((q, i) => (
-        <div key={i} className="mb-4 rounded-3xl bg-white p-6 shadow">
+        <div key={i} className="mb-4 rounded-3xl bg-card p-6 shadow">
           <div className="mb-3 flex items-center justify-between">
-            <span className="font-black text-slate-400">Question {i + 1}</span>
+            <span className="font-black text-zinc-500">Question {i + 1}</span>
             <button
               onClick={() =>
                 setQuestions((qs) => qs.filter((_, j) => j !== i))
               }
               disabled={questions.length === 1}
-              className="text-sm font-bold text-red-400 hover:text-red-600 disabled:opacity-30"
+              className="text-sm font-bold text-red-400 hover:text-red-400 disabled:opacity-30"
             >
               Remove
             </button>
@@ -225,7 +225,7 @@ export default function QuizEditor({
             value={q.text}
             onChange={(e) => updateQuestion(i, { text: e.target.value })}
             placeholder="Ask your question…"
-            className="mb-4 w-full rounded-xl border-2 border-slate-200 px-4 py-3 font-bold outline-none focus:border-brand"
+            className="mb-4 w-full rounded-xl border-2 border-zinc-700 px-4 py-3 font-bold outline-none focus:border-brand"
           />
 
           <div className="mb-4 grid gap-2 sm:grid-cols-2">
@@ -234,8 +234,8 @@ export default function QuizEditor({
                 key={oi}
                 className={`flex items-center gap-2 rounded-xl border-2 px-3 py-2 ${
                   q.correct_index === oi
-                    ? "border-emerald-400 bg-emerald-50"
-                    : "border-slate-200"
+                    ? "border-neon bg-emerald-950"
+                    : "border-zinc-700"
                 }`}
               >
                 <input
@@ -244,7 +244,7 @@ export default function QuizEditor({
                   checked={q.correct_index === oi}
                   onChange={() => updateQuestion(i, { correct_index: oi })}
                   title="Mark as correct answer"
-                  className="accent-emerald-500"
+                  className="accent-[#00FF85]"
                 />
                 <input
                   value={opt}
@@ -256,7 +256,7 @@ export default function QuizEditor({
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm font-bold text-slate-600">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-bold text-zinc-400">
             <label className="flex items-center gap-2">
               Timer
               <select
@@ -264,7 +264,7 @@ export default function QuizEditor({
                 onChange={(e) =>
                   updateQuestion(i, { time_limit: Number(e.target.value) })
                 }
-                className="rounded-lg border-2 border-slate-200 px-2 py-1"
+                className="rounded-lg border-2 border-zinc-700 px-2 py-1"
               >
                 {[10, 15, 20, 30, 45, 60, 90, 120].map((s) => (
                   <option key={s} value={s}>
@@ -280,7 +280,7 @@ export default function QuizEditor({
                 onChange={(e) =>
                   updateQuestion(i, { points: Number(e.target.value) })
                 }
-                className="rounded-lg border-2 border-slate-200 px-2 py-1"
+                className="rounded-lg border-2 border-zinc-700 px-2 py-1"
               >
                 {[500, 1000, 2000].map((p) => (
                   <option key={p} value={p}>
@@ -289,7 +289,7 @@ export default function QuizEditor({
                 ))}
               </select>
             </label>
-            <span className="text-slate-400">
+            <span className="text-zinc-500">
               Tick the radio next to the correct answer
             </span>
           </div>
@@ -298,16 +298,16 @@ export default function QuizEditor({
 
       <button
         onClick={() => setQuestions((qs) => [...qs, emptyQuestion()])}
-        className="w-full rounded-3xl border-4 border-dashed border-violet-200 py-4 font-extrabold text-brand hover:bg-violet-100"
+        className="w-full rounded-3xl border-4 border-dashed border-zinc-700 py-4 font-extrabold text-brand hover:bg-zinc-800"
       >
         + Add question
       </button>
 
-      <div className="mt-4 rounded-3xl bg-white p-6 shadow">
+      <div className="mt-4 rounded-3xl bg-card p-6 shadow">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-extrabold">Import questions</h2>
-            <p className="text-sm font-semibold text-slate-500">
+            <p className="text-sm font-semibold text-zinc-400">
               Upload a CSV file — imported questions are added below your
               existing ones.
             </p>
@@ -316,7 +316,7 @@ export default function QuizEditor({
             <a
               href="/question-template.csv"
               download
-              className="rounded-full border-2 border-slate-200 px-4 py-2 text-sm font-bold hover:bg-slate-50"
+              className="rounded-full border-2 border-zinc-700 px-4 py-2 text-sm font-bold hover:bg-zinc-800"
             >
               ⬇ Download template
             </a>
@@ -339,7 +339,7 @@ export default function QuizEditor({
             />
           </div>
         </div>
-        <p className="mt-3 text-xs font-semibold text-slate-400">
+        <p className="mt-3 text-xs font-semibold text-zinc-500">
           Format: question, option1–option4 (option3/4 optional), correct
           (1–4), time_limit (seconds), points. Works with files exported from
           Excel or Google Sheets as CSV.

@@ -31,7 +31,7 @@ export default async function LandingPage() {
             <>
               <Link
                 href="/login"
-                className="rounded-full px-5 py-2 font-bold text-brand hover:bg-violet-100"
+                className="rounded-full px-5 py-2 font-bold text-brand hover:bg-zinc-800"
               >
                 Log in
               </Link>
@@ -50,14 +50,14 @@ export default async function LandingPage() {
         <h1 className="max-w-2xl text-5xl font-black leading-tight sm:text-6xl">
           Live quizzes, <span className="text-brand">zero friction</span>
         </h1>
-        <p className="max-w-xl text-lg text-slate-600">
+        <p className="max-w-xl text-lg text-zinc-400">
           Create a quiz, share one link, and watch the leaderboard update in
           real time. Players can join as guests — no account needed.
         </p>
 
         <form
           action={joinByCode}
-          className="flex w-full max-w-md overflow-hidden rounded-2xl border-4 border-brand bg-white shadow-lg"
+          className="flex w-full max-w-md overflow-hidden rounded-2xl border-4 border-brand bg-card shadow-lg"
         >
           <input
             name="code"
@@ -65,7 +65,7 @@ export default async function LandingPage() {
             maxLength={6}
             inputMode="numeric"
             placeholder="Enter game code"
-            className="flex-1 px-5 py-4 text-center text-2xl font-extrabold tracking-widest outline-none placeholder:text-slate-300"
+            className="flex-1 px-5 py-4 text-center text-2xl font-extrabold tracking-widest outline-none placeholder:text-zinc-600"
           />
           <button
             type="submit"

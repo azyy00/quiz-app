@@ -12,10 +12,10 @@ import { TrophyIcon } from "@/components/icons";
 import type { Question } from "@/lib/types";
 
 const OPTION_COLORS = [
-  "bg-rose-500",
-  "bg-sky-500",
-  "bg-amber-500",
-  "bg-emerald-500",
+  "bg-[#FF0099] text-white",
+  "bg-[#1E90FF] text-white",
+  "bg-amber-400 text-black",
+  "bg-[#00FF85] text-black",
 ];
 
 export default function HostScreen({
@@ -137,7 +137,7 @@ export default function HostScreen({
 
   if (!game) {
     return (
-      <main className="flex min-h-screen items-center justify-center font-black text-slate-400">
+      <main className="flex min-h-screen items-center justify-center font-black text-zinc-500">
         Loading game…
       </main>
     );
@@ -152,18 +152,18 @@ export default function HostScreen({
   if (game.status === "lobby") {
     return (
       <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center gap-6 px-4 py-10">
-        <p className="font-bold uppercase tracking-wide text-slate-400">
+        <p className="font-bold uppercase tracking-wide text-zinc-500">
           Players join at
         </p>
         <button
           onClick={() => navigator.clipboard?.writeText(joinUrl)}
           title="Click to copy link"
-          className="rounded-2xl bg-white px-6 py-3 font-bold text-brand shadow hover:bg-violet-100"
+          className="rounded-2xl bg-card px-6 py-3 font-bold text-brand shadow hover:bg-zinc-800"
         >
           {joinUrl} 📋
         </button>
         <div className="rounded-3xl bg-brand px-10 py-6 text-center shadow-xl">
-          <p className="text-sm font-bold uppercase text-violet-200">
+          <p className="text-sm font-bold uppercase text-blue-200">
             Game code
           </p>
           <p className="text-6xl font-black tracking-widest text-white">
@@ -180,12 +180,12 @@ export default function HostScreen({
             {players.map((p) => (
               <span
                 key={p.id}
-                className="flex items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-4 font-bold shadow"
+                className="flex items-center gap-2 rounded-full bg-card py-1.5 pl-1.5 pr-4 font-bold shadow"
               >
                 <Avatar seed={p.nickname} className="h-8 w-8" />
                 {p.nickname}
                 {p.is_guest && (
-                  <span className="ml-1 text-xs font-bold text-slate-400">
+                  <span className="ml-1 text-xs font-bold text-zinc-500">
                     Guest
                   </span>
                 )}
@@ -197,7 +197,7 @@ export default function HostScreen({
         <button
           onClick={() => advance("start")}
           disabled={busy || players.length === 0}
-          className="mt-auto rounded-full bg-emerald-500 px-10 py-4 text-xl font-black text-white shadow-lg hover:bg-emerald-600 disabled:opacity-40"
+          className="mt-auto rounded-full bg-neon px-10 py-4 text-xl font-black text-black shadow-lg hover:bg-neon-pink hover:text-white disabled:opacity-40"
         >
           Start quiz →
         </button>
@@ -238,7 +238,7 @@ export default function HostScreen({
   // ---------- QUESTION / REVEAL ----------
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-4 py-8">
-      <header className="flex items-center justify-between font-extrabold text-slate-500">
+      <header className="flex items-center justify-between font-extrabold text-zinc-400">
         <span>
           Question {game.current_question_index + 1} / {questions.length}
         </span>
@@ -251,13 +251,13 @@ export default function HostScreen({
             {Math.ceil(remaining)}s
           </span>
         ) : (
-          <span className="rounded-full bg-slate-200 px-4 py-1.5 font-black">
+          <span className="rounded-full bg-zinc-700 px-4 py-1.5 font-black">
             Answers locked
           </span>
         )}
       </header>
 
-      <h1 className="rounded-3xl bg-white p-8 text-center text-3xl font-black shadow">
+      <h1 className="rounded-3xl bg-card p-8 text-center text-3xl font-black shadow">
         {question.text}
       </h1>
 
@@ -267,7 +267,7 @@ export default function HostScreen({
           return (
             <div
               key={i}
-              className={`rounded-2xl p-5 text-lg font-extrabold text-white shadow transition-all ${
+              className={`rounded-2xl p-5 text-lg font-extrabold shadow transition-all ${
                 OPTION_COLORS[i % OPTION_COLORS.length]
               } ${isReveal && !isCorrect ? "opacity-30" : ""}`}
             >
@@ -279,13 +279,13 @@ export default function HostScreen({
       </div>
 
       {game.status === "question" && (
-        <p className="text-center font-bold text-slate-500">
+        <p className="text-center font-bold text-zinc-400">
           {answerCount} / {players.length} answered
         </p>
       )}
 
       <div>
-        <h2 className="mb-2 text-center font-extrabold text-slate-500">
+        <h2 className="mb-2 text-center font-extrabold text-zinc-400">
           {game.status === "question" ? "🏁 Live race" : "Leaderboard"}
         </h2>
         <Leaderboard players={players} limit={8} />
@@ -305,7 +305,7 @@ export default function HostScreen({
           <button
             onClick={() => advance("next")}
             disabled={busy}
-            className="rounded-full bg-emerald-500 px-8 py-3 text-lg font-black text-white hover:bg-emerald-600 disabled:opacity-50"
+            className="rounded-full bg-neon px-8 py-3 text-lg font-black text-black hover:bg-neon-pink hover:text-white disabled:opacity-50"
           >
             {isLast
               ? `Final results in ${autoNextLeft}s 🏆 (tap to skip)`

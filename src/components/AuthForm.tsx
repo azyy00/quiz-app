@@ -59,7 +59,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl">
+      <div className="w-full max-w-sm rounded-3xl bg-card p-8 shadow-xl">
         <Link href="/" className="mb-6 flex justify-center">
           <Brand />
         </Link>
@@ -74,7 +74,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            className="rounded-xl border-2 border-slate-200 px-4 py-3 font-semibold outline-none focus:border-brand"
+            className="rounded-xl border-2 border-zinc-700 px-4 py-3 font-semibold outline-none focus:border-brand"
           />
           <input
             type="password"
@@ -83,15 +83,15 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password (min 6 characters)"
-            className="rounded-xl border-2 border-slate-200 px-4 py-3 font-semibold outline-none focus:border-brand"
+            className="rounded-xl border-2 border-zinc-700 px-4 py-3 font-semibold outline-none focus:border-brand"
           />
           {error && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600">
+            <p className="rounded-lg bg-red-950 px-3 py-2 text-sm font-semibold text-red-400">
               {error}
             </p>
           )}
           {notice && (
-            <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
+            <p className="rounded-lg bg-emerald-950 px-3 py-2 text-sm font-semibold text-emerald-300">
               {notice}
             </p>
           )}
@@ -104,19 +104,19 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
           </button>
         </form>
 
-        <div className="my-4 flex items-center gap-3 text-xs font-bold text-slate-400">
-          <div className="h-px flex-1 bg-slate-200" /> OR
-          <div className="h-px flex-1 bg-slate-200" />
+        <div className="my-4 flex items-center gap-3 text-xs font-bold text-zinc-500">
+          <div className="h-px flex-1 bg-zinc-700" /> OR
+          <div className="h-px flex-1 bg-zinc-700" />
         </div>
 
         <button
           onClick={signInWithGoogle}
-          className="w-full rounded-xl border-2 border-slate-200 py-3 font-extrabold hover:bg-slate-50"
+          className="w-full rounded-xl border-2 border-zinc-700 py-3 font-extrabold hover:bg-zinc-800"
         >
           Continue with Google
         </button>
 
-        <p className="mt-6 text-center text-sm font-semibold text-slate-500">
+        <p className="mt-6 text-center text-sm font-semibold text-zinc-400">
           {mode === "login" ? (
             <>
               New here?{" "}

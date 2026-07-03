@@ -46,7 +46,7 @@ export default function Leaderboard({
 
   if (shown.length === 0) {
     return (
-      <div className="rounded-2xl bg-white px-4 py-6 text-center font-bold text-slate-400 shadow">
+      <div className="rounded-2xl bg-card px-4 py-6 text-center font-bold text-zinc-500 shadow">
         No players yet
       </div>
     );
@@ -64,7 +64,7 @@ export default function Leaderboard({
           <div
             key={p.id}
             className={`absolute left-0 flex w-full items-center gap-3 rounded-2xl px-4 shadow ${
-              isMe ? "bg-brand text-white" : "bg-white text-slate-900"
+              isMe ? "bg-brand text-white" : "bg-card text-white"
             } ${justScored ? "ring-4 ring-emerald-300" : ""}`}
             style={{
               height: ROW_H,
@@ -87,7 +87,7 @@ export default function Leaderboard({
               {p.is_guest && (
                 <span
                   className={`ml-2 rounded-full px-2 py-0.5 text-xs font-bold ${
-                    isMe ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"
+                    isMe ? "bg-card/20 text-white" : "bg-zinc-800 text-zinc-400"
                   }`}
                 >
                   Guest
@@ -95,7 +95,7 @@ export default function Leaderboard({
               )}
             </span>
             {justScored && (
-              <span className="animate-pulse text-sm font-black text-emerald-500">
+              <span className="animate-pulse text-sm font-black text-neon">
                 ▲
               </span>
             )}

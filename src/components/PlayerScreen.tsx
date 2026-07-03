@@ -18,10 +18,10 @@ import {
 import type { PublicQuestion } from "@/lib/types";
 
 const OPTION_COLORS = [
-  "bg-rose-500 hover:bg-rose-600",
-  "bg-sky-500 hover:bg-sky-600",
-  "bg-amber-500 hover:bg-amber-600",
-  "bg-emerald-500 hover:bg-emerald-600",
+  "bg-[#FF0099] text-white hover:brightness-110",
+  "bg-[#1E90FF] text-white hover:brightness-110",
+  "bg-amber-400 text-black hover:brightness-110",
+  "bg-[#00FF85] text-black hover:brightness-110",
 ];
 
 interface QuestionPayload {
@@ -133,7 +133,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
 
   if (!game) {
     return (
-      <main className="flex min-h-screen items-center justify-center font-black text-slate-400">
+      <main className="flex min-h-screen items-center justify-center font-black text-zinc-500">
         Loading…
       </main>
     );
@@ -164,14 +164,14 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         )}
         <h1 className="text-2xl font-black">You&apos;re in, {me?.nickname}!</h1>
         {me?.is_guest && (
-          <span className="rounded-full bg-slate-200 px-3 py-1 text-sm font-bold text-slate-600">
+          <span className="rounded-full bg-zinc-700 px-3 py-1 text-sm font-bold text-zinc-400">
             Playing as Guest
           </span>
         )}
-        <p className="font-bold text-slate-500">
+        <p className="font-bold text-zinc-400">
           Waiting for the host to start the quiz…
         </p>
-        <p className="text-sm font-semibold text-slate-400">
+        <p className="text-sm font-semibold text-zinc-500">
           {players.length} player{players.length === 1 ? "" : "s"} in the lobby
         </p>
       </main>
@@ -206,7 +206,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   const q = payload?.question;
   if (!q || payload.question.order_index !== game.current_question_index) {
     return (
-      <main className="flex min-h-screen items-center justify-center font-black text-slate-400">
+      <main className="flex min-h-screen items-center justify-center font-black text-zinc-500">
         Get ready…
       </main>
     );
@@ -224,16 +224,16 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           mine.is_correct ? (
             <>
               <CheckIcon className="pop-in h-24 w-24" />
-              <h1 className="text-3xl font-black text-emerald-600">Correct!</h1>
+              <h1 className="text-3xl font-black text-neon">Correct!</h1>
               <p className="text-2xl font-extrabold">
                 +{mine.points_awarded} points
               </p>
               {streak >= 2 && (
-                <div className="pop-in flex items-center gap-2 rounded-full bg-orange-50 px-5 py-2 shadow">
+                <div className="pop-in flex items-center gap-2 rounded-full bg-orange-950 px-5 py-2 shadow">
                   <FlameIcon
                     className={`flame-flicker ${streak >= 5 ? "h-12 w-12" : "h-9 w-9"}`}
                   />
-                  <span className="text-xl font-black text-orange-600">
+                  <span className="text-xl font-black text-orange-400">
                     {streak} IN A ROW{streak >= 5 ? " — ON FIRE!" : "!"}
                   </span>
                 </div>
@@ -243,9 +243,9 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
             <>
               <CrossIcon className="pop-in h-24 w-24" />
               <h1 className="text-3xl font-black text-red-500">Wrong</h1>
-              <p className="font-bold text-slate-500">
+              <p className="font-bold text-zinc-400">
                 Correct answer:{" "}
-                <span className="text-slate-900">
+                <span className="text-white">
                   {q.options[q.correct_index ?? 0]}
                 </span>
               </p>
@@ -254,15 +254,15 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         ) : chosen !== null ? (
           <>
             <ClockIcon className="pop-in h-24 w-24" />
-            <h1 className="text-3xl font-black text-amber-600">
+            <h1 className="text-3xl font-black text-amber-400">
               Too late!
             </h1>
-            <p className="font-bold text-slate-500">
+            <p className="font-bold text-zinc-400">
               Your answer arrived after time ran out, so it didn&apos;t count.
             </p>
-            <p className="font-bold text-slate-500">
+            <p className="font-bold text-zinc-400">
               Correct answer:{" "}
-              <span className="text-slate-900">
+              <span className="text-white">
                 {q.options[q.correct_index ?? 0]}
               </span>
             </p>
@@ -270,12 +270,12 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         ) : (
           <>
             <ClockIcon className="pop-in h-24 w-24 opacity-70" />
-            <h1 className="text-3xl font-black text-slate-500">
+            <h1 className="text-3xl font-black text-zinc-400">
               Time&apos;s up — no answer
             </h1>
-            <p className="font-bold text-slate-500">
+            <p className="font-bold text-zinc-400">
               Correct answer:{" "}
-              <span className="text-slate-900">
+              <span className="text-white">
                 {q.options[q.correct_index ?? 0]}
               </span>
             </p>
@@ -283,14 +283,14 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         )}
 
         {me && myRank && (
-          <p className="rounded-full bg-white px-6 py-2 font-extrabold shadow">
+          <p className="rounded-full bg-card px-6 py-2 font-extrabold shadow">
             #{myRank} · {me.score} pts
           </p>
         )}
         <div className="w-full">
           <Leaderboard players={players} highlightId={playerId} limit={5} />
         </div>
-        <p className="text-sm font-bold text-slate-400">
+        <p className="text-sm font-bold text-zinc-500">
           {q.order_index >= payload.total - 1
             ? "🏆 Final results coming up…"
             : autoNextLeft > 0
@@ -305,7 +305,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   const answered = chosen !== null;
   return (
     <main className="mx-auto flex min-h-screen max-w-xl flex-col gap-5 px-4 py-8">
-      <header className="flex items-center justify-between font-extrabold text-slate-500">
+      <header className="flex items-center justify-between font-extrabold text-zinc-400">
         <span>Q{game.current_question_index + 1}</span>
         <span
           className={`rounded-full px-4 py-1.5 text-lg font-black tabular-nums text-white ${
@@ -316,7 +316,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         </span>
       </header>
 
-      <h1 className="rounded-3xl bg-white p-6 text-center text-2xl font-black shadow">
+      <h1 className="rounded-3xl bg-card p-6 text-center text-2xl font-black shadow">
         {q.text}
       </h1>
 
@@ -325,10 +325,10 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           {submitError ? (
             <>
               <div className="text-5xl">⚠️</div>
-              <p className="text-xl font-black text-amber-600">
+              <p className="text-xl font-black text-amber-400">
                 Answer didn&apos;t count
               </p>
-              <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-700">
+              <p className="rounded-lg bg-amber-950 px-3 py-2 text-sm font-semibold text-amber-300">
                 {submitError}
               </p>
             </>
@@ -336,14 +336,14 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
             <>
               <BoltIcon className="h-14 w-14 animate-pulse" />
               <p className="text-xl font-black">Answer locked in!</p>
-              <p className="font-bold text-slate-500">
+              <p className="font-bold text-zinc-400">
                 Waiting for everyone else…
               </p>
             </>
           )}
         </div>
       ) : remaining <= 0 ? (
-        <p className="flex-1 content-center text-center text-xl font-black text-slate-500">
+        <p className="flex-1 content-center text-center text-xl font-black text-zinc-400">
           ⏰ Time&apos;s up!
         </p>
       ) : (
@@ -352,7 +352,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
             <button
               key={i}
               onClick={() => submit(i)}
-              className={`min-h-[70px] rounded-2xl p-5 text-lg font-extrabold text-white shadow transition-transform active:scale-95 ${
+              className={`min-h-[70px] rounded-2xl p-5 text-lg font-extrabold shadow transition-transform active:scale-95 ${
                 OPTION_COLORS[i % OPTION_COLORS.length]
               }`}
             >

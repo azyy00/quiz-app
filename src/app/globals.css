@@ -1,13 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #6d28d9;
-  --color-brand-dark: #5b21b6;
+  /* Neon-on-dark palette */
+  --color-brand: #1e90ff; /* electric blue — primary actions */
+  --color-brand-dark: #ff0099; /* vivid pink — hover states */
+  --color-neon: #00ff85; /* neon green — success & highlights */
+  --color-neon-pink: #ff0099;
+  --color-card: #161616; /* raised surfaces on the #0D0D0D bg */
   --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  @apply bg-violet-50 text-slate-900 antialiased;
+  @apply bg-[#0D0D0D] text-white antialiased;
+}
+
+/* Native form controls follow the dark theme */
+input,
+select,
+textarea {
+  background-color: transparent;
+  color: inherit;
+  color-scheme: dark;
+}
+select option {
+  background-color: #161616;
+  color: #fff;
+}
+
+/* Soft neon glows for key surfaces */
+.glow-blue {
+  box-shadow: 0 0 18px rgba(30, 144, 255, 0.35);
+}
+.glow-green {
+  box-shadow: 0 0 18px rgba(0, 255, 133, 0.35);
+}
+.glow-pink {
+  box-shadow: 0 0 18px rgba(255, 0, 153, 0.35);
 }
 
 /* --- celebration animations --- */

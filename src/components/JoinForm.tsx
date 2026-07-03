@@ -43,8 +43,8 @@ export default function JoinForm({
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl">
-        <p className="mb-1 text-center text-sm font-bold uppercase tracking-wide text-slate-400">
+      <div className="w-full max-w-sm rounded-3xl bg-card p-8 shadow-xl">
+        <p className="mb-1 text-center text-sm font-bold uppercase tracking-wide text-zinc-500">
           Joining game
         </p>
         <p className="mb-6 text-center text-4xl font-black tracking-widest text-brand">
@@ -58,10 +58,10 @@ export default function JoinForm({
             required
             maxLength={20}
             placeholder="Your nickname"
-            className="rounded-xl border-2 border-slate-200 px-4 py-3 text-center text-lg font-extrabold outline-none focus:border-brand"
+            className="rounded-xl border-2 border-zinc-700 px-4 py-3 text-center text-lg font-extrabold outline-none focus:border-brand"
           />
           {error && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600">
+            <p className="rounded-lg bg-red-950 px-3 py-2 text-sm font-semibold text-red-400">
               {error}
             </p>
           )}
@@ -80,25 +80,25 @@ export default function JoinForm({
 
         {!isLoggedIn && (
           <>
-            <div className="my-4 flex items-center gap-3 text-xs font-bold text-slate-400">
-              <div className="h-px flex-1 bg-slate-200" /> OR
-              <div className="h-px flex-1 bg-slate-200" />
+            <div className="my-4 flex items-center gap-3 text-xs font-bold text-zinc-500">
+              <div className="h-px flex-1 bg-zinc-700" /> OR
+              <div className="h-px flex-1 bg-zinc-700" />
             </div>
             <div className="flex gap-2">
               <Link
                 href={`/login?next=${encodeURIComponent(joinPath)}`}
-                className="flex-1 rounded-xl border-2 border-slate-200 py-2.5 text-center font-bold hover:bg-slate-50"
+                className="flex-1 rounded-xl border-2 border-zinc-700 py-2.5 text-center font-bold hover:bg-zinc-800"
               >
                 Log in
               </Link>
               <Link
                 href={`/signup?next=${encodeURIComponent(joinPath)}`}
-                className="flex-1 rounded-xl border-2 border-slate-200 py-2.5 text-center font-bold hover:bg-slate-50"
+                className="flex-1 rounded-xl border-2 border-zinc-700 py-2.5 text-center font-bold hover:bg-zinc-800"
               >
                 Register
               </Link>
             </div>
-            <p className="mt-3 text-center text-xs font-semibold text-slate-400">
+            <p className="mt-3 text-center text-xs font-semibold text-zinc-500">
               Guests only need a nickname — you&apos;ll show up as “Guest” on
               the leaderboard.
             </p>
