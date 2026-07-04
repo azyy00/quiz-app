@@ -12,6 +12,34 @@ body {
   @apply bg-[#0D0D0D] text-white antialiased;
 }
 
+/* Tasteful defaults: calm motion, visible focus, refined selection */
+button,
+a,
+input,
+select,
+textarea {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
+}
+:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+::selection {
+  background: #8b5cf6;
+  color: #fff;
+}
+
+/* Dark scrollbar so the chrome doesn't flash white */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3f3f46 transparent;
+}
+
 /* Native form controls follow the dark theme */
 input,
 select,

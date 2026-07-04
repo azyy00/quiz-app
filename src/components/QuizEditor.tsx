@@ -190,7 +190,7 @@ export default function QuizEditor({
         </p>
       )}
 
-      <div className="mb-6 rounded-3xl bg-card p-6 shadow">
+      <div className="mb-6 rounded-3xl border border-zinc-800 bg-card p-6 shadow">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -207,7 +207,7 @@ export default function QuizEditor({
       </div>
 
       {questions.map((q, i) => (
-        <div key={i} className="mb-4 rounded-3xl bg-card p-6 shadow">
+        <div key={i} className="mb-4 rounded-3xl border border-zinc-800 bg-card p-6 shadow">
           <div className="mb-3 flex items-center justify-between">
             <span className="font-black text-zinc-500">Question {i + 1}</span>
             <button
@@ -303,7 +303,7 @@ export default function QuizEditor({
         + Add question
       </button>
 
-      <div className="mt-4 rounded-3xl bg-card p-6 shadow">
+      <div className="mt-4 rounded-3xl border border-zinc-800 bg-card p-6 shadow">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-extrabold">Import questions</h2>

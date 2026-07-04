@@ -59,7 +59,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-3xl bg-card p-8 shadow-xl">
+      <div className="w-full max-w-sm rounded-3xl border border-zinc-800 bg-card p-8 shadow-xl">
         <Link href="/" className="mb-6 flex justify-center">
           <Brand />
         </Link>

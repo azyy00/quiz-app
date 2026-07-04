@@ -22,5 +22,5 @@ export default function Avatar({
 }) {
   const uri = useMemo(() => avatarUri(seed), [seed]);
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={uri} alt="" className={`${className} rounded-full bg-card`} />;
+  return <img src={uri} alt="" className={`${className} rounded-full border border-zinc-800 bg-card`} />;
 }

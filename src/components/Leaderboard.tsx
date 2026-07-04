@@ -46,7 +46,7 @@ export default function Leaderboard({
 
   if (shown.length === 0) {
     return (
-      <div className="rounded-2xl bg-card px-4 py-6 text-center font-bold text-zinc-500 shadow">
+      <div className="rounded-2xl border border-zinc-800 bg-card px-4 py-6 text-center font-bold text-zinc-500 shadow">
         No players yet
       </div>
     );

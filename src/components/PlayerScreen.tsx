@@ -283,7 +283,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         )}
 
         {me && myRank && (
-          <p className="rounded-full bg-card px-6 py-2 font-extrabold shadow">
+          <p className="rounded-full border border-zinc-800 bg-card px-6 py-2 font-extrabold shadow">
             #{myRank} · {me.score} pts
           </p>
         )}
@@ -316,7 +316,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         </span>
       </header>
 
-      <h1 className="rounded-3xl bg-card p-6 text-center text-2xl font-black shadow">
+      <h1 className="rounded-3xl border border-zinc-800 bg-card p-6 text-center text-2xl font-black shadow">
         {q.text}
       </h1>
 

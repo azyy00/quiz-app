@@ -164,7 +164,7 @@ export default function HostScreen({
             });
           }}
           title={copied ? "Copied!" : "Click to copy link"}
-          className={`flex items-center gap-2 rounded-2xl bg-card px-6 py-3 font-bold shadow transition-colors ${
+          className={`flex items-center gap-2 rounded-2xl border border-zinc-800 bg-card px-6 py-3 font-bold shadow transition-colors ${
             copied ? "text-emerald-400" : "text-brand hover:text-white"
           }`}
         >
@@ -193,7 +193,7 @@ export default function HostScreen({
             {players.map((p) => (
               <span
                 key={p.id}
-                className="flex items-center gap-2 rounded-full bg-card py-1.5 pl-1.5 pr-4 font-bold shadow"
+                className="flex items-center gap-2 rounded-full border border-zinc-800 bg-card py-1.5 pl-1.5 pr-4 font-bold shadow"
               >
                 <Avatar seed={p.nickname} className="h-8 w-8" />
                 {p.nickname}
@@ -270,7 +270,7 @@ export default function HostScreen({
         )}
       </header>
 
-      <h1 className="rounded-3xl bg-card p-8 text-center text-3xl font-black shadow">
+      <h1 className="rounded-3xl border border-zinc-800 bg-card p-8 text-center text-3xl font-black shadow">
         {question.text}
       </h1>
 

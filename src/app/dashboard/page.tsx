@@ -41,7 +41,7 @@ export default async function DashboardPage() {
       </div>
 
       {!quizzes?.length && (
-        <div className="rounded-3xl bg-card p-10 text-center shadow">
+        <div className="rounded-3xl border border-zinc-800 bg-card p-10 text-center shadow">
           <p className="mb-4 text-lg font-bold text-zinc-400">
             No quizzes yet. Create your first one!
           </p>
@@ -59,7 +59,7 @@ export default async function DashboardPage() {
           (quiz) => (
             <li
               key={quiz.id}
-              className="flex flex-col gap-3 rounded-3xl bg-card p-6 shadow sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 rounded-3xl border border-zinc-800 bg-card p-6 shadow sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <h2 className="text-xl font-extrabold">{quiz.title}</h2>
