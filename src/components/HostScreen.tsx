@@ -138,7 +138,7 @@ export default function HostScreen({
 
   if (!game) {
     return (
-      <main className="flex min-h-dvh items-center justify-center font-black text-zinc-500">
+      <main className="flex min-h-dvh animate-pulse items-center justify-center font-black text-zinc-500">
         Loading game…
       </main>
     );

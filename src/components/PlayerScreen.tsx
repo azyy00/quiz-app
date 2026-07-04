@@ -133,7 +133,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
 
   if (!game) {
     return (
-      <main className="flex min-h-dvh items-center justify-center font-black text-zinc-500">
+      <main className="flex min-h-dvh animate-pulse items-center justify-center font-black text-zinc-500">
         Loading…
       </main>
     );
@@ -206,7 +206,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   const q = payload?.question;
   if (!q || payload.question.order_index !== game.current_question_index) {
     return (
-      <main className="flex min-h-dvh items-center justify-center font-black text-zinc-500">
+      <main className="flex min-h-dvh animate-pulse items-center justify-center font-black text-zinc-500">
         Get ready…
       </main>
     );

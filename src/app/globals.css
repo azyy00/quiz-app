@@ -5,11 +5,50 @@
   --color-brand: #8b5cf6; /* violet — primary actions */
   --color-brand-dark: #7c3aed; /* deeper violet — hover states */
   --color-card: #161616; /* raised surfaces on the #0D0D0D bg */
-  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   @apply bg-[#0D0D0D] text-white antialiased;
+  /* Ambient brand glow at the top so the page isn't a flat void */
+  background-image: radial-gradient(
+    60% 32rem at 50% -4rem,
+    rgba(139, 92, 246, 0.09),
+    transparent
+  );
+  background-repeat: no-repeat;
+}
+
+/* Subtle film grain to break digital flatness */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Typography rhythm: no orphans, tighter display tracking */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  letter-spacing: -0.015em;
+}
+p {
+  text-wrap: pretty;
+}
+
+/* Physical press feedback on every enabled button */
+button:not(:disabled):active,
+a[class*="rounded-full"]:active {
+  transform: scale(0.98);
 }
 
 /* Tasteful defaults: calm motion, visible focus, refined selection */
@@ -22,7 +61,8 @@ textarea {
     background-color 150ms ease,
     border-color 150ms ease,
     color 150ms ease,
-    opacity 150ms ease;
+    opacity 150ms ease,
+    transform 120ms ease;
 }
 :focus-visible {
   outline: 2px solid #8b5cf6;
