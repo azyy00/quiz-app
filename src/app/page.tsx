@@ -16,7 +16,7 @@ export default async function LandingPage() {
   } = await supabase.auth.getUser();
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-dvh flex flex-col">
       <header className="flex items-center justify-between px-6 py-4">
         <Brand />
         <nav className="flex gap-3">

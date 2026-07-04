@@ -138,7 +138,7 @@ export default function HostScreen({
 
   if (!game) {
     return (
-      <main className="flex min-h-screen items-center justify-center font-black text-zinc-500">
+      <main className="flex min-h-dvh items-center justify-center font-black text-zinc-500">
         Loading game…
       </main>
     );
@@ -152,7 +152,7 @@ export default function HostScreen({
   // ---------- LOBBY ----------
   if (game.status === "lobby") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center gap-6 px-4 py-10">
+      <main className="mx-auto flex min-h-dvh max-w-2xl flex-col items-center gap-6 px-4 py-10">
         <p className="font-bold uppercase tracking-wide text-zinc-500">
           Players join at
         </p>
@@ -164,22 +164,22 @@ export default function HostScreen({
             });
           }}
           title={copied ? "Copied!" : "Click to copy link"}
-          className={`flex items-center gap-2 rounded-2xl border border-zinc-800 bg-card px-6 py-3 font-bold shadow transition-colors ${
+          className={`flex max-w-full items-center gap-2 rounded-2xl border border-zinc-800 bg-card px-4 py-3 text-sm font-bold shadow transition-colors sm:px-6 sm:text-base ${
             copied ? "text-emerald-400" : "text-brand hover:text-white"
           }`}
         >
-          {joinUrl}
+          <span className="min-w-0 break-all">{joinUrl}</span>
           {copied ? (
             <CheckSmallIcon className="pop-in h-5 w-5" />
           ) : (
             <CopyIcon className="h-5 w-5" />
           )}
         </button>
-        <div className="rounded-3xl bg-brand px-10 py-6 text-center shadow-xl">
+        <div className="w-full max-w-sm rounded-3xl bg-brand px-6 py-6 text-center shadow-xl sm:px-10">
           <p className="text-sm font-bold uppercase text-violet-200">
             Game code
           </p>
-          <p className="text-6xl font-black tracking-widest text-white">
+          <p className="text-5xl font-black tracking-widest text-white sm:text-6xl">
             {game.pin}
           </p>
         </div>
@@ -221,7 +221,7 @@ export default function HostScreen({
   // ---------- FINISHED ----------
   if (game.status === "finished") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center gap-6 px-4 py-10">
+      <main className="mx-auto flex min-h-dvh max-w-xl flex-col items-center gap-6 px-4 py-10">
         <Confetti count={260} duration={4500} />
         <h1 className="flex items-center gap-3 text-4xl font-black">
           <TrophyIcon className="h-10 w-10" /> Final results
@@ -250,7 +250,7 @@ export default function HostScreen({
 
   // ---------- QUESTION / REVEAL ----------
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-4 py-8">
+    <main className="mx-auto flex min-h-dvh max-w-3xl flex-col gap-6 px-4 py-8">
       <header className="flex items-center justify-between font-extrabold text-zinc-400">
         <span>
           Question {game.current_question_index + 1} / {questions.length}
@@ -270,7 +270,7 @@ export default function HostScreen({
         )}
       </header>
 
-      <h1 className="rounded-3xl border border-zinc-800 bg-card p-8 text-center text-3xl font-black shadow">
+      <h1 className="rounded-3xl border border-zinc-800 bg-card p-6 text-center text-2xl font-black shadow sm:p-8 sm:text-3xl">
         {question.text}
       </h1>
 

@@ -133,7 +133,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
 
   if (!game) {
     return (
-      <main className="flex min-h-screen items-center justify-center font-black text-zinc-500">
+      <main className="flex min-h-dvh items-center justify-center font-black text-zinc-500">
         Loading…
       </main>
     );
@@ -141,7 +141,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
 
   if (!playerId) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-4">
+      <main className="flex min-h-dvh flex-col items-center justify-center gap-4 px-4">
         <p className="text-xl font-extrabold">You haven&apos;t joined this game.</p>
         <Link
           href={`/join/${game.pin}`}
@@ -156,7 +156,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   // ---------- LOBBY ----------
   if (game.status === "lobby") {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
+      <main className="flex min-h-dvh flex-col items-center justify-center gap-4 px-4 text-center">
         {me && (
           <div className="pop-in">
             <Avatar seed={me.nickname} className="h-24 w-24 shadow-lg" />
@@ -181,7 +181,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   // ---------- FINISHED ----------
   if (game.status === "finished") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center gap-6 px-4 py-10">
+      <main className="mx-auto flex min-h-dvh max-w-xl flex-col items-center gap-6 px-4 py-10">
         {myRank !== null && myRank <= 3 && (
           <Confetti count={220} duration={4000} />
         )}
@@ -206,7 +206,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   const q = payload?.question;
   if (!q || payload.question.order_index !== game.current_question_index) {
     return (
-      <main className="flex min-h-screen items-center justify-center font-black text-zinc-500">
+      <main className="flex min-h-dvh items-center justify-center font-black text-zinc-500">
         Get ready…
       </main>
     );
@@ -216,7 +216,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   if (game.status === "reveal") {
     const mine = payload.myAnswer;
     return (
-      <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-5 px-4 py-10 text-center">
+      <main className="mx-auto flex min-h-dvh max-w-xl flex-col items-center justify-center gap-5 px-4 py-10 text-center">
         {mine?.is_correct && (
           <Confetti key={game.current_question_index} />
         )}
@@ -304,7 +304,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   // ---------- LIVE QUESTION ----------
   const answered = chosen !== null;
   return (
-    <main className="mx-auto flex min-h-screen max-w-xl flex-col gap-5 px-4 py-8">
+    <main className="mx-auto flex min-h-dvh max-w-xl flex-col gap-5 px-4 py-8">
       <header className="flex items-center justify-between font-extrabold text-zinc-400">
         <span>Q{game.current_question_index + 1}</span>
         <span

@@ -42,7 +42,7 @@ export default function JoinForm({
   const joinPath = `/join/${encodeURIComponent(pin)}`;
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4">
+    <main className="flex min-h-dvh items-center justify-center px-4">
       <div className="w-full max-w-sm rounded-3xl border border-zinc-800 bg-card p-8 shadow-xl">
         <p className="mb-1 text-center text-sm font-bold uppercase tracking-wide text-zinc-500">
           Joining game
