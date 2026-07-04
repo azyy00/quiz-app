@@ -234,7 +234,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
                     className={`flame-flicker ${streak >= 5 ? "h-12 w-12" : "h-9 w-9"}`}
                   />
                   <span className="text-xl font-black text-orange-400">
-                    {streak} IN A ROW{streak >= 5 ? " — ON FIRE!" : "!"}
+                    {streak} IN A ROW{streak >= 5 ? "! ON FIRE!" : "!"}
                   </span>
                 </div>
               )}
@@ -271,7 +271,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           <>
             <ClockIcon className="pop-in h-24 w-24 opacity-70" />
             <h1 className="text-3xl font-black text-zinc-400">
-              Time&apos;s up — no answer
+              Time&apos;s up, no answer
             </h1>
             <p className="font-bold text-zinc-400">
               Correct answer:{" "}
@@ -292,7 +292,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         </div>
         <p className="text-sm font-bold text-zinc-500">
           {q.order_index >= payload.total - 1
-            ? "🏆 Final results coming up…"
+            ? "Final results coming up…"
             : autoNextLeft > 0
               ? `Next question in ${autoNextLeft}s…`
               : "Get ready…"}
@@ -324,7 +324,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
           {submitError ? (
             <>
-              <div className="text-5xl">⚠️</div>
+              <ClockIcon className="pop-in h-16 w-16" />
               <p className="text-xl font-black text-amber-400">
                 Answer didn&apos;t count
               </p>

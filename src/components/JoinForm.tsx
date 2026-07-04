@@ -99,7 +99,7 @@ export default function JoinForm({
               </Link>
             </div>
             <p className="mt-3 text-center text-xs font-semibold text-zinc-500">
-              Guests only need a nickname — you&apos;ll show up as “Guest” on
+              Guests only need a nickname. You&apos;ll show up as “Guest” on
               the leaderboard.
             </p>
           </>

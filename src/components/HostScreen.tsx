@@ -299,7 +299,7 @@ export default function HostScreen({
 
       <div>
         <h2 className="mb-2 text-center font-extrabold text-zinc-400">
-          {game.status === "question" ? "🏁 Live race" : "Leaderboard"}
+          {game.status === "question" ? "Live race" : "Leaderboard"}
         </h2>
         <Leaderboard players={players} limit={8} />
       </div>
@@ -321,7 +321,7 @@ export default function HostScreen({
             className="rounded-full bg-emerald-500 px-8 py-3 text-lg font-black text-white hover:bg-emerald-600 disabled:opacity-50"
           >
             {isLast
-              ? `Final results in ${autoNextLeft}s 🏆 (tap to skip)`
+              ? `Final results in ${autoNextLeft}s (tap to skip)`
               : `Next question in ${autoNextLeft}s → (tap to skip)`}
           </button>
         )}

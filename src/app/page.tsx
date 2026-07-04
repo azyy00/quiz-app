@@ -46,41 +46,46 @@ export default async function LandingPage() {
         </nav>
       </header>
 
-      <section className="flex flex-1 flex-col items-center justify-center gap-8 px-6 pb-24 text-center">
-        <h1 className="max-w-2xl text-5xl font-black leading-tight sm:text-6xl">
-          Live quizzes, <span className="text-brand">zero friction</span>
-        </h1>
-        <p className="max-w-xl text-lg text-zinc-400">
-          Create a quiz, share one link, and watch the leaderboard update in
-          real time. Players can join as guests — no account needed.
-        </p>
+      <section className="mx-auto grid w-full max-w-5xl flex-1 content-center gap-12 px-6 pb-24 pt-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+        <div className="flex flex-col gap-6 text-center lg:text-left">
+          <h1 className="text-5xl font-black leading-tight sm:text-6xl">
+            Live quizzes,{" "}
+            <span className="text-brand">zero friction</span>
+          </h1>
+          <p className="mx-auto max-w-md text-lg text-zinc-400 lg:mx-0">
+            Create a quiz, share one link, and watch the leaderboard update
+            live. Guests just pick a nickname.
+          </p>
+          <Link
+            href={user ? "/dashboard" : "/signup"}
+            className="mx-auto w-fit rounded-full bg-brand px-7 py-3 font-extrabold text-white hover:bg-brand-dark lg:mx-0"
+          >
+            Create a quiz
+          </Link>
+        </div>
 
         <form
           action={joinByCode}
-          className="flex w-full max-w-md overflow-hidden rounded-2xl border-4 border-brand bg-card shadow-lg"
+          className="flex w-full flex-col gap-4 rounded-3xl border border-zinc-800 bg-card p-8 shadow-xl"
         >
+          <p className="text-center text-sm font-bold uppercase tracking-wide text-zinc-500">
+            Got a game code?
+          </p>
           <input
             name="code"
             required
             maxLength={6}
             inputMode="numeric"
-            placeholder="Enter game code"
-            className="flex-1 px-5 py-4 text-center text-2xl font-extrabold tracking-widest outline-none placeholder:text-zinc-600"
+            placeholder="123456"
+            className="rounded-xl border-2 border-zinc-700 px-5 py-4 text-center text-3xl font-black tracking-[0.3em] outline-none placeholder:text-zinc-700 focus:border-brand"
           />
           <button
             type="submit"
-            className="bg-brand px-8 text-lg font-extrabold text-white hover:bg-brand-dark"
+            className="rounded-xl bg-emerald-500 py-4 text-lg font-black text-white hover:bg-emerald-600"
           >
-            Join
+            Join game
           </button>
         </form>
-
-        <Link
-          href={user ? "/dashboard" : "/signup"}
-          className="font-bold text-brand underline underline-offset-4"
-        >
-          or create your own quiz →
-        </Link>
       </section>
     </main>
   );

@@ -308,7 +308,7 @@ export default function QuizEditor({
           <div>
             <h2 className="font-extrabold">Import questions</h2>
             <p className="text-sm font-semibold text-zinc-400">
-              Upload a CSV file — imported questions are added below your
+              Upload a CSV file. Imported questions are added below your
               existing ones.
             </p>
           </div>
