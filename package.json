@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0",
     "@dicebear/collection": "^9.4.2",
     "@dicebear/core": "^9.4.2",
     "@supabase/ssr": "^0.6.1",

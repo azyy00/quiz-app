@@ -50,6 +50,59 @@ export default function QuizEditor({
   const [error, setError] = useState<string | null>(null);
   const [importNotice, setImportNotice] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [aiTopic, setAiTopic] = useState("");
+  const [aiCount, setAiCount] = useState(10);
+  const [aiDifficulty, setAiDifficulty] = useState("medium");
+  const [aiLoading, setAiLoading] = useState(false);
+
+  function addQuestions(added: EditableQuestion[]) {
+    setQuestions((qs) => {
+      // Replace the single untouched starter question instead of appending to it
+      const isPristine =
+        qs.length === 1 &&
+        !qs[0].text.trim() &&
+        qs[0].options.every((o) => !o.trim());
+      return isPristine ? added : [...qs, ...added];
+    });
+  }
+
+  async function generateWithAi() {
+    setError(null);
+    setImportNotice(null);
+    if (!aiTopic.trim()) {
+      setError("Type a topic to generate questions about.");
+      return;
+    }
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/quiz/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: aiTopic,
+          count: aiCount,
+          difficulty: aiDifficulty,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Generation failed");
+
+      const generated = (data.questions as EditableQuestion[]).map((q) => ({
+        ...q,
+        options: [...q.options, "", "", ""].slice(0, 4),
+      }));
+      addQuestions(generated);
+      if (!title.trim()) setTitle(aiTopic.trim());
+      setImportNotice(
+        `Generated ${generated.length} question${generated.length === 1 ? "" : "s"} about "${aiTopic.trim()}". Review them below, then save.`
+      );
+      setAiTopic("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Generation failed");
+    } finally {
+      setAiLoading(false);
+    }
+  }
 
   async function importCsv(file: File) {
     setError(null);
@@ -58,19 +111,13 @@ export default function QuizEditor({
     const { questions: imported, errors } = parseQuestionCsv(text);
 
     if (imported.length > 0) {
-      const padded = imported.map((q) => ({
-        ...q,
-        // Editor UI always shows 4 option slots
-        options: [...q.options, "", "", ""].slice(0, 4),
-      }));
-      setQuestions((qs) => {
-        // Replace the single untouched starter question instead of appending to it
-        const isPristine =
-          qs.length === 1 &&
-          !qs[0].text.trim() &&
-          qs[0].options.every((o) => !o.trim());
-        return isPristine ? padded : [...qs, ...padded];
-      });
+      addQuestions(
+        imported.map((q) => ({
+          ...q,
+          // Editor UI always shows 4 option slots
+          options: [...q.options, "", "", ""].slice(0, 4),
+        }))
+      );
     }
 
     const parts = [
@@ -302,6 +349,61 @@ export default function QuizEditor({
       >
         + Add question
       </button>
+
+      <div className="mt-4 rounded-3xl border border-zinc-800 bg-card p-6 shadow">
+        <h2 className="font-extrabold">Generate with AI</h2>
+        <p className="mb-4 text-sm font-semibold text-zinc-400">
+          Type any topic and get ready-made questions added below your
+          existing ones.
+        </p>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <input
+            value={aiTopic}
+            onChange={(e) => setAiTopic(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                generateWithAi();
+              }
+            }}
+            maxLength={200}
+            placeholder="e.g. Animals, Philippine history, 90s music"
+            className="flex-1 rounded-xl border-2 border-zinc-700 px-4 py-2.5 font-semibold outline-none focus:border-brand"
+          />
+          <select
+            value={aiCount}
+            onChange={(e) => setAiCount(Number(e.target.value))}
+            className="rounded-xl border-2 border-zinc-700 px-3 py-2.5 font-bold"
+          >
+            {[5, 10, 15, 20].map((n) => (
+              <option key={n} value={n}>
+                {n} questions
+              </option>
+            ))}
+          </select>
+          <select
+            value={aiDifficulty}
+            onChange={(e) => setAiDifficulty(e.target.value)}
+            className="rounded-xl border-2 border-zinc-700 px-3 py-2.5 font-bold"
+          >
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <button
+            onClick={generateWithAi}
+            disabled={aiLoading}
+            className="rounded-xl bg-brand px-6 py-2.5 font-extrabold text-white hover:bg-brand-dark disabled:opacity-50"
+          >
+            {aiLoading ? "Generating…" : "Generate"}
+          </button>
+        </div>
+        {aiLoading && (
+          <p className="mt-3 animate-pulse text-sm font-semibold text-zinc-400">
+            Writing your quiz, this takes a few seconds…
+          </p>
+        )}
+      </div>
 
       <div className="mt-4 rounded-3xl border border-zinc-800 bg-card p-6 shadow">
         <div className="flex flex-wrap items-center justify-between gap-3">
