@@ -102,6 +102,14 @@ export async function POST(
       .eq("id", playerId);
   }
 
-  // Don't leak correctness until the reveal — just acknowledge
-  return NextResponse.json({ ok: true });
+  // Return the outcome so the client can render the reveal reliably
+  // without re-querying (the client hides it until the reveal).
+  return NextResponse.json({
+    ok: true,
+    result: {
+      answer_index: answerIndex,
+      is_correct: isCorrect,
+      points_awarded: pointsAwarded,
+    },
+  });
 }

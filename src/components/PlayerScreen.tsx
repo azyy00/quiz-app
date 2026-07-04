@@ -80,6 +80,17 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
     setSubmitError(null);
   }, [game?.current_question_index]);
 
+  // Outcome of this question's submission, straight from the answer API.
+  // Authoritative for the reveal screen: no re-query race can lose it.
+  const [myResult, setMyResult] = useState<{
+    answer_index: number;
+    is_correct: boolean;
+    points_awarded: number;
+  } | null>(null);
+  useEffect(() => {
+    setMyResult(null);
+  }, [game?.current_question_index]);
+
   // Consecutive-correct streak, counted once per revealed question
   const [streak, setStreak] = useState(0);
   const lastCounted = useRef<number | null>(null);
@@ -88,8 +99,10 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
     if (payload.question.order_index !== game.current_question_index) return;
     if (lastCounted.current === game.current_question_index) return;
     lastCounted.current = game.current_question_index;
-    setStreak((s) => (payload.myAnswer?.is_correct ? s + 1 : 0));
-  }, [game?.status, game?.current_question_index, payload]);
+    setStreak((s) =>
+      (myResult ?? payload.myAnswer)?.is_correct ? s + 1 : 0
+    );
+  }, [game?.status, game?.current_question_index, payload, myResult]);
 
   // Mirror the host's 15s auto-next countdown on the results screen.
   // Display-only: the host screen actually advances the game.
@@ -123,9 +136,11 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ playerId, answerIndex }),
       });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         setSubmitError(data.error ?? "Could not submit answer");
+      } else if (data.result) {
+        setMyResult(data.result);
       }
     },
     [gameId, playerId, chosen]
@@ -214,7 +229,9 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
 
   // ---------- REVEAL ----------
   if (game.status === "reveal") {
-    const mine = payload.myAnswer;
+    // Prefer the outcome returned directly by the answer API; the
+    // database lookup can race the reveal and miss a just-saved answer.
+    const mine = myResult ?? payload.myAnswer;
     return (
       <main className="mx-auto flex min-h-dvh max-w-xl flex-col items-center justify-center gap-5 px-4 py-10 text-center">
         {mine?.is_correct && (
