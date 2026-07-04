@@ -1,32 +1,33 @@
 import { NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@/lib/supabase/server";
 
 // Quiz generation can take a while for 20 questions
 export const maxDuration = 60;
 
-const QUESTION_SCHEMA = {
-  type: "object",
+// Gemini's free tier: Gemini 2.5 Flash, ~1,500 requests/day, no card.
+const MODEL = "gemini-2.5-flash";
+
+// Gemini structured-output schema (OpenAPI 3.0 subset — uppercase types).
+const RESPONSE_SCHEMA = {
+  type: "OBJECT",
   properties: {
     questions: {
-      type: "array",
+      type: "ARRAY",
       items: {
-        type: "object",
+        type: "OBJECT",
         properties: {
-          text: { type: "string" },
-          options: { type: "array", items: { type: "string" } },
-          correct_index: { type: "integer" },
-          time_limit: { type: "integer" },
-          points: { type: "integer" },
+          text: { type: "STRING" },
+          options: { type: "ARRAY", items: { type: "STRING" } },
+          correct_index: { type: "INTEGER" },
+          time_limit: { type: "INTEGER" },
+          points: { type: "INTEGER" },
         },
         required: ["text", "options", "correct_index", "time_limit", "points"],
-        additionalProperties: false,
       },
     },
   },
   required: ["questions"],
-  additionalProperties: false,
-} as const;
+};
 
 const clamp = (n: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, n));
@@ -42,9 +43,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
     return NextResponse.json(
-      { error: "AI generation is not configured (missing ANTHROPIC_API_KEY)" },
+      { error: "AI generation is not configured (missing GEMINI_API_KEY)" },
       { status: 503 }
     );
   }
@@ -60,20 +62,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Give me a topic" }, { status: 400 });
   }
 
-  const anthropic = new Anthropic();
-
-  try {
-    const response = await anthropic.messages.create({
-      model: "claude-opus-4-8",
-      max_tokens: 16000,
-      thinking: { type: "adaptive" },
-      output_config: {
-        format: { type: "json_schema", schema: QUESTION_SCHEMA },
-      },
-      messages: [
-        {
-          role: "user",
-          content: `Create ${count} ${difficulty}-difficulty multiple-choice quiz questions about: ${topic}
+  const prompt = `Create ${count} ${difficulty}-difficulty multiple-choice quiz questions about: ${topic}
 
 Rules:
 - This is for a live Kahoot-style party quiz, so keep questions punchy and fun to read aloud
@@ -84,23 +73,53 @@ Rules:
 - Vary the angle across questions so they don't feel repetitive
 - time_limit is seconds: 10 for quick recall, 15-20 if the question needs reading time; use 10 for most
 - points: 1000 for standard questions, 500 for true/false
-- Write everything in the same language as the topic prompt`,
-        },
-      ],
-    });
+- Write everything in the same language as the topic prompt`;
 
-    if (response.stop_reason === "refusal") {
-      return NextResponse.json(
-        { error: "Could not generate questions for this topic" },
-        { status: 422 }
-      );
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey,
+        },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: RESPONSE_SCHEMA,
+          },
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      console.error("Gemini generation failed:", res.status, detail);
+      const message =
+        res.status === 429
+          ? "Free daily limit reached, try again tomorrow"
+          : res.status === 400
+            ? "Generation failed (check the API key)"
+            : `Generation failed (${res.status})`;
+      return NextResponse.json({ error: message }, { status: 502 });
     }
 
-    const text = response.content.find((b) => b.type === "text")?.text;
+    const data = await res.json();
+    const text: string | undefined =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
     if (!text) {
+      // Safety block or empty response
+      const blocked = data?.promptFeedback?.blockReason;
       return NextResponse.json(
-        { error: "The generator returned no questions, try again" },
-        { status: 502 }
+        {
+          error: blocked
+            ? "Could not generate questions for this topic"
+            : "The generator returned no questions, try again",
+        },
+        { status: blocked ? 422 : 502 }
       );
     }
 
@@ -115,7 +134,7 @@ Rules:
     };
 
     // Belt-and-suspenders validation against the game's constraints
-    const questions = parsed.questions
+    const questions = (parsed.questions ?? [])
       .filter(
         (q) =>
           q.text?.trim() &&
@@ -144,10 +163,9 @@ Rules:
     return NextResponse.json({ questions });
   } catch (err) {
     console.error("Quiz generation failed:", err);
-    const message =
-      err instanceof Anthropic.APIError
-        ? `Generation failed (${err.status})`
-        : "Generation failed, please try again";
-    return NextResponse.json({ error: message }, { status: 502 });
+    return NextResponse.json(
+      { error: "Generation failed, please try again" },
+      { status: 502 }
+    );
   }
 }
