@@ -1,91 +1,166 @@
-# QuizBlitz — Realtime Quiz Game
+<div align="center">
 
-A Kahoot-style live quiz app. Creators build quizzes and host live games;
-players join with a link or 6-digit code — as guests (nickname only) or with
-an account — and answer timed questions while the leaderboard updates in
-real time.
+# ⚡ AQuiz
 
-## Tech stack
+### A real-time, Kahoot-style quiz game you can host in seconds.
 
-| Layer     | Choice                                             |
-| --------- | -------------------------------------------------- |
-| Frontend  | Next.js 15 (App Router) + React 19 + TypeScript    |
-| Styling   | Tailwind CSS v4                                    |
-| Backend   | Next.js API routes + Supabase                      |
-| Database  | Supabase Postgres                                  |
-| Realtime  | Supabase Realtime (postgres_changes)               |
-| Auth      | Supabase Auth — email/password, Google OAuth, guest mode |
+Create a quiz (or let AI write one), share a link, and watch players battle it out on a **live leaderboard** — complete with countdown timers, streak fires, confetti, and a champion podium for the winner.
 
-## How it works
+<br />
 
-- **Creator flow**: sign up → dashboard → create quiz (multiple-choice
-  questions, per-question timer, default 30s) → "Host live" → share the
-  join link or code → start the quiz → control question pacing → final
-  leaderboard.
-- **Player flow**: open `/join/<code>` → log in, register, or continue as
-  guest (nickname only, marked "Guest" everywhere) → lobby → answer each
-  timed question → see correct/wrong + points after each question → live
-  ranking → final results.
-- **Scoring** (server-side, anti-cheat): correct answers earn
-  `round(points × remainingTime / totalTime)` (default base 1000); wrong or
-  missing answers earn 0. Time is measured on the server from the moment
-  the question opened, and the correct answer is never sent to players
-  until the reveal.
-- **Sync**: game state lives in one `games` row; all clients subscribe to
-  its changes via Supabase Realtime (plus a 5s poll fallback). The host
-  advances a state machine: `lobby → question → reveal → … → finished`.
-  Answers are locked server-side when the timer expires, and a unique
-  constraint prevents double answers.
+[![Live Demo](https://img.shields.io/badge/▶_Live_Demo-azyquiz.vercel.app-1E90FF?style=for-the-badge)](https://azyquiz.vercel.app)
 
-## Setup
+![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=flat-square&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_v4-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini_AI-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)
+
+</div>
+
+---
+
+## ✨ Features
+
+### 🎮 Play
+- **Join in one tap** — players enter a 6-digit game code or open a share link. No download, no account required.
+- **Guest mode** — jump in with just a nickname; guests are clearly badged everywhere.
+- **Live race leaderboard** — rows slide up and down in real time as scores land, flashing green on every gain.
+- **Speed-based scoring** — faster correct answers score higher: `round(points × remainingTime ÷ totalTime)`.
+- **Streaks & celebrations** — a fire streak for consecutive correct answers, confetti on wins, and a crowned **champion podium** wearing the winner's avatar.
+- **Runs itself** — auto-advances between questions with a synced countdown on every screen; the host can skip ahead any time.
+
+### 🛠️ Create
+- **Fast quiz builder** — multiple-choice questions, per-question timers and points, one-click correct-answer picker.
+- **🤖 AI generation** — type a topic (*"Animals"*, *"Philippine history"*, *"90s music"*), pick a count and difficulty, and Gemini writes a full quiz you can edit before saving.
+- **CSV import** — bring questions from Excel or Google Sheets; a downloadable template shows the exact format.
+- **Host live** — every quiz gets a unique code and shareable link; you control pacing and watch players join in real time.
+
+### 🎨 Polish
+- Custom **AQuiz** brand and favicon, unique auto-generated avatar per player.
+- Sleek **dark theme** with subtle depth, hairline card borders, and smooth press feedback.
+- **Fully responsive** — built for phones first, since that's where players tap.
+- Custom vector icons throughout (no emoji in the UI), honest empty/loading/error states, and a branded 404 page.
+
+---
+
+## 🧱 Tech stack
+
+| Layer      | Choice                                                     |
+| ---------- | ---------------------------------------------------------- |
+| Frontend   | **Next.js 15** (App Router) · **React 19** · **TypeScript** |
+| Styling    | **Tailwind CSS v4**                                        |
+| Backend    | **Next.js API routes** + **Supabase**                     |
+| Database   | **Supabase Postgres** (with Row Level Security)           |
+| Realtime   | **Supabase Realtime** (postgres_changes + poll fallback)  |
+| Auth       | **Supabase Auth** — email/password · Google OAuth · guest |
+| AI         | **Google Gemini** (2.5 Flash, free tier)                  |
+| Hosting    | **Vercel**                                                |
+
+---
+
+## 🚀 Getting started
 
 ### 1. Create a Supabase project
 
-1. Go to [supabase.com](https://supabase.com), create a project.
-2. In the **SQL Editor**, run the contents of
-   [`supabase/migrations/001_init.sql`](supabase/migrations/001_init.sql).
-3. (Optional, for Google login) In **Authentication → Providers → Google**,
-   enable Google and add your OAuth client ID/secret. Add
-   `http://localhost:3000/auth/callback` (and your production URL) to the
-   redirect allowlist.
-4. For quick local testing you can disable email confirmation under
-   **Authentication → Providers → Email**.
+1. Go to [supabase.com](https://supabase.com) and create a project.
+2. Open the **SQL Editor** and run the contents of
+   [`supabase/migrations/001_init.sql`](supabase/migrations/001_init.sql) — this creates every table, the security policies, and the realtime setup.
+3. *(Optional — Google login)* Under **Authentication → Sign In / Providers → Google**, enable it and paste your Google OAuth client ID + secret. Add `http://localhost:3000/auth/callback` (and your production URL) to the redirect allowlist.
+4. *(Optional — easier testing)* Turn off "Confirm email" under **Authentication → Providers → Email** so signups are instant.
 
-### 2. Configure the app
+### 2. Get a free Gemini key *(for AI quiz generation)*
+
+Go to [aistudio.google.com](https://aistudio.google.com) → **Get API key**. No credit card, ~1,500 generations/day free. Skip this step if you don't want AI generation — the rest of the app works without it.
+
+### 3. Configure environment variables
 
 ```bash
 cp .env.example .env.local
 ```
 
-Fill in from **Project Settings → API**:
+Fill in `.env.local`:
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY` (server-only — never exposed to the browser)
-- `NEXT_PUBLIC_SITE_URL` (`http://localhost:3000` for dev)
+| Variable | Where to find it |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API (`anon` key) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API (`service_role` — **server-only**) |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` for local dev |
+| `GEMINI_API_KEY` | Google AI Studio (optional) |
 
-### 3. Run
+### 4. Run it
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000, sign up, create a quiz, hit **Host live**, and
-join from a second browser/incognito window with the game code.
+Open **http://localhost:3000**, sign up, create a quiz, hit **Host live**, then open the join link in an incognito window (or on your phone) to play along.
 
-## Deployment
+---
 
-Vercel is the natural fit (zero-config for Next.js):
+## 🕹️ How it works
 
-1. Push this repo to GitHub and import it in Vercel.
-2. Add the four environment variables from `.env.local`.
-3. Set `NEXT_PUBLIC_SITE_URL` to your production URL and add
-   `https://<your-domain>/auth/callback` to Supabase's auth redirect list.
+**Creator flow**
 
-Supabase Realtime works out of the box — no long-running server needed.
+```
+sign up → dashboard → create / AI-generate quiz → Host live
+   → share code/link → players join lobby → start
+   → question ↔ reveal (× N) → 🏆 final leaderboard
+```
 
-## Project structure
+**Player flow**
+
+```
+open link → log in / register / continue as guest
+   → lobby → answer each timed question
+   → correct/wrong + points → live ranking → final results
+```
+
+**Realtime engine.** The whole game lives in a single `games` row that walks a state machine — `lobby → question → reveal → … → finished`. Every client subscribes to that row (and the player list) via Supabase Realtime, with a lightweight poll as a safety net, so all screens stay in lockstep. Countdowns are corrected against server time so a device with a wrong clock can't be cheated out of an on-time answer.
+
+---
+
+## 🤖 AI quiz generation
+
+Inside the editor, the **Generate with AI** card sends your topic to a server-side route that calls **Gemini 2.5 Flash** with a strict JSON schema — so the response is always valid, then re-validated against the game's own rules before it reaches the editor. You get ready-made questions with options, correct answers, timers, and points already set, which you can tweak before saving. Only signed-in creators can call it, and the key never touches the browser.
+
+## 📄 CSV import format
+
+Header row required. `option3`/`option4` are optional (leave blank for true/false); `time_limit` and `points` default to `10` and `1000`.
+
+```csv
+question,option1,option2,option3,option4,correct,time_limit,points
+What is the fastest land animal?,Lion,Cheetah,Horse,Greyhound,2,10,1000
+True or False: Bats can fly,True,False,,,1,15,500
+```
+
+`correct` is the 1-based option number of the right answer.
+
+---
+
+## ☁️ Deployment (Vercel)
+
+1. Push this repo to GitHub and **import it** at [vercel.com/new](https://vercel.com/new). Next.js is auto-detected.
+2. Add the environment variables from `.env.local` (set `NEXT_PUBLIC_SITE_URL` to your Vercel URL).
+3. In Supabase → **Authentication → URL Configuration**, set the **Site URL** to your Vercel URL and add `https://<your-domain>/auth/callback` to the redirect list.
+
+Supabase Realtime works out of the box — there's no long-running server to manage.
+
+---
+
+## 🔒 Security notes
+
+- All game mutations go through API routes using the **service-role key**; browsers get read-only access to game state via **Row Level Security**.
+- **Scores are computed server-side** from server timestamps — never trusted from the client.
+- The **correct answer is stripped** from question payloads until the reveal.
+- A database **unique constraint** blocks duplicate answers; the timer is enforced on the server.
+
+---
+
+## 🗂️ Project structure
 
 ```
 supabase/migrations/001_init.sql    Schema, RLS policies, realtime publication
@@ -94,35 +169,39 @@ src/
 ├── lib/
 │   ├── types.ts                    Shared TypeScript models
 │   ├── useGame.ts                  Realtime game/players hook + countdown
-│   └── supabase/                   Browser / server / admin (service-role) clients
+│   ├── importQuestions.ts          CSV parser
+│   └── supabase/                   Browser / server / admin clients
 ├── components/
-│   ├── AuthForm.tsx                Login & signup (email + Google)
-│   ├── QuizEditor.tsx              Create/edit quiz with questions
-│   ├── JoinForm.tsx                Login / register / guest join
-│   ├── HostScreen.tsx              Lobby → live control → results
-│   ├── PlayerScreen.tsx            Lobby → answer → reveal → results
-│   ├── Leaderboard.tsx             Ranked list with Guest badges
-│   └── StartGameButton.tsx
+│   ├── AuthForm · Brand · Avatar   Auth, logo, per-player avatars
+│   ├── QuizEditor                  Build, AI-generate, and import questions
+│   ├── JoinForm                    Log in / register / guest join
+│   ├── HostScreen                  Lobby → live control → results
+│   ├── PlayerScreen                Lobby → answer → reveal → results
+│   ├── Leaderboard · Champion      Animated race board + winner podium
+│   ├── Confetti · icons            Celebration canvas + custom vector icons
+│   └── StartGameButton
 └── app/
     ├── page.tsx                    Landing (join by code)
-    ├── login/ · signup/ · auth/    Auth pages + OAuth callback + signout
-    ├── dashboard/                  Creator's quizzes
+    ├── login · signup · auth       Auth pages + OAuth callback + signout
+    ├── dashboard                   Creator's quizzes
     ├── quiz/new · quiz/[id]/edit   Quiz editor pages
-    ├── host/[gameId]/              Host screen
-    ├── join/[pin]/                 Shareable join link
-    ├── play/[gameId]/              Player screen
-    └── api/games/                  create · join · advance · answer · question
+    ├── host/[gameId]               Host screen
+    ├── join/[pin] · play/[gameId]  Player join + play screens
+    ├── not-found.tsx               Branded 404
+    └── api/
+        ├── games/                  create · join · advance · answer · question
+        ├── quiz/generate           AI question generation (Gemini)
+        └── time                    Server clock for countdown sync
 ```
 
-## Security notes
+---
 
-- All game mutations go through API routes using the service-role key;
-  browser clients have read-only access (RLS) to game state.
-- Scores are computed server-side from server timestamps.
-- The correct answer index is stripped from question payloads until reveal.
-- Duplicate answers are blocked by a database unique constraint.
+## 🙌 Credits
 
-## Credits
+- Player avatars: [DiceBear](https://www.dicebear.com) "bottts" style by Pablo Stanley — free for personal and commercial use, generated locally.
+- Built with [Next.js](https://nextjs.org), [Supabase](https://supabase.com), [Tailwind CSS](https://tailwindcss.com), and [Google Gemini](https://ai.google.dev).
 
-- Player avatars: [DiceBear](https://www.dicebear.com) "bottts" style by
-  Pablo Stanley — free for personal and commercial use, generated locally.
+<div align="center">
+<br />
+<sub>Made for fun, fast, no-friction quizzes. ⚡</sub>
+</div>
