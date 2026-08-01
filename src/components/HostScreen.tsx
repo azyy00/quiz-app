@@ -274,7 +274,7 @@ export default function HostScreen({
         {question.text}
       </h1>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {question.options.map((opt, i) => {
           const isCorrect = i === question.correct_index;
           return (

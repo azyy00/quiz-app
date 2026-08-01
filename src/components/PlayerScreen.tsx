@@ -364,7 +364,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
           ⏰ Time&apos;s up!
         </p>
       ) : (
-        <div className="grid flex-1 content-start gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 flex-1 content-start gap-3 sm:grid-cols-2">
           {q.options.map((opt, i) => (
             <button
               key={i}

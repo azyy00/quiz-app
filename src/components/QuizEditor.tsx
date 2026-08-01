@@ -275,7 +275,7 @@ export default function QuizEditor({
             className="mb-4 w-full rounded-xl border-2 border-zinc-700 px-4 py-3 font-bold outline-none focus:border-brand"
           />
 
-          <div className="mb-4 grid gap-2 sm:grid-cols-2">
+          <div className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {q.options.map((opt, oi) => (
               <label
                 key={oi}

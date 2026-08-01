@@ -46,7 +46,7 @@ export default async function LandingPage() {
         </nav>
       </header>
 
-      <section className="mx-auto grid w-full max-w-5xl flex-1 content-center gap-12 px-6 pb-24 pt-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+      <section className="mx-auto grid w-full max-w-5xl flex-1 grid-cols-1 content-center gap-12 px-6 pb-24 pt-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
         <div className="flex flex-col gap-6 text-center lg:text-left">
           <h1 className="text-5xl font-black leading-tight sm:text-6xl">
             Live quizzes,{" "}
