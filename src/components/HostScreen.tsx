@@ -152,7 +152,7 @@ export default function HostScreen({
   // ---------- LOBBY ----------
   if (game.status === "lobby") {
     return (
-      <main className="mx-auto flex min-h-dvh max-w-2xl flex-col items-center gap-6 px-4 py-10">
+      <main className="pb-safe mx-auto flex min-h-dvh max-w-2xl flex-col items-center gap-6 px-4 py-10">
         <p className="font-bold uppercase tracking-wide text-zinc-500">
           Players join at
         </p>
@@ -304,7 +304,7 @@ export default function HostScreen({
         <Leaderboard players={players} limit={8} />
       </div>
 
-      <div className="mt-auto flex justify-center gap-3">
+      <div className="pb-safe mt-auto flex justify-center gap-3">
         {game.status === "question" && (
           <button
             onClick={() => advance("reveal")}

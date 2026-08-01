@@ -321,7 +321,7 @@ export default function PlayerScreen({ gameId }: { gameId: string }) {
   // ---------- LIVE QUESTION ----------
   const answered = chosen !== null;
   return (
-    <main className="mx-auto flex min-h-dvh max-w-xl flex-col gap-5 px-4 py-8">
+    <main className="pb-safe mx-auto flex min-h-dvh max-w-xl flex-col gap-5 px-4 py-8">
       <header className="flex items-center justify-between font-extrabold text-zinc-400">
         <span>Q{game.current_question_index + 1}</span>
         <span

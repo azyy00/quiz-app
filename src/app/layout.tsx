@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,6 +11,15 @@ export const metadata: Metadata = {
       "Create quizzes, share a link, and play live with friends. Guests join with just a nickname.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Cover the whole screen on notched phones so we can pad content past
+  // the notch and home indicator with the safe-area insets ourselves.
+  viewportFit: "cover",
+  themeColor: "#0D0D0D",
 };
 
 export default function RootLayout({

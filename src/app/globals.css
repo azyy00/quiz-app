@@ -10,6 +10,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keep our own type scale on mobile — stop iOS from inflating text
+     in landscape and let us size inputs to dodge the focus-zoom. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -21,6 +25,17 @@ body {
     transparent
   );
   background-repeat: no-repeat;
+  /* No stray horizontal scroll from wide elements on small screens. */
+  overflow-x: hidden;
+  /* Kill the grey flash when tapping buttons/links on touch devices. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Extra bottom room for anchored action rows so buttons clear the
+   home indicator / gesture bar on notched phones. Additive to any
+   existing padding on the element. */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Subtle film grain to break digital flatness */
