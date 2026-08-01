@@ -1,6 +1,11 @@
 <div align="center">
 
-# ⚡ AQuiz
+<a href="https://azyquiz.vercel.app">
+  <img src="docs/banner.svg" alt="AQuiz — Live quizzes, zero friction. A real-time, Kahoot-style quiz game." width="100%" />
+</a>
+
+<br />
+<br />
 
 ### A real-time, Kahoot-style quiz game you can host in seconds.
 

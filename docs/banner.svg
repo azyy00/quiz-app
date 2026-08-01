@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 440" font-family="'Arial Black', 'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="4%" r="62%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.30" />
+      <stop offset="45%" stop-color="#8b5cf6" stop-opacity="0.07" />
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="vign" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0D0D0D" stop-opacity="0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.55" />
+    </linearGradient>
+  </defs>
+
+  <!-- backdrop -->
+  <rect width="1280" height="440" fill="#0D0D0D" />
+  <rect width="1280" height="440" fill="url(#glow)" />
+  <rect width="1280" height="440" fill="url(#vign)" />
+
+  <!-- confetti — a restrained nod to the celebration theme -->
+  <g opacity="0.85">
+    <rect x="150" y="70" width="14" height="14" rx="3" fill="#8b5cf6" transform="rotate(24 157 77)" opacity="0.8" />
+    <rect x="255" y="128" width="11" height="11" rx="2" fill="#1E5EFF" transform="rotate(-18 260 133)" opacity="0.7" />
+    <circle cx="95" cy="150" r="6" fill="#10b981" opacity="0.7" />
+    <circle cx="320" cy="60" r="5" fill="#f59e0b" opacity="0.8" />
+    <rect x="205" y="44" width="9" height="9" rx="2" fill="#ffffff" transform="rotate(35 209 48)" opacity="0.45" />
+    <rect x="1108" y="72" width="14" height="14" rx="3" fill="#1E5EFF" transform="rotate(-26 1115 79)" opacity="0.8" />
+    <rect x="1010" y="126" width="11" height="11" rx="2" fill="#8b5cf6" transform="rotate(20 1015 131)" opacity="0.7" />
+    <circle cx="1180" cy="150" r="6" fill="#f59e0b" opacity="0.7" />
+    <circle cx="965" cy="58" r="5" fill="#10b981" opacity="0.8" />
+    <rect x="1065" y="44" width="9" height="9" rx="2" fill="#ffffff" transform="rotate(-32 1069 48)" opacity="0.45" />
+  </g>
+
+  <!-- kicker -->
+  <text x="640" y="96" text-anchor="middle" font-size="21" font-weight="800"
+        letter-spacing="6" fill="#8a8a8a" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">REAL-TIME&#160;&#183;&#160;KAHOOT-STYLE&#160;&#183;&#160;QUIZ&#160;GAME</text>
+
+  <!-- wordmark -->
+  <text x="637" y="238" text-anchor="middle" font-size="152" font-weight="900" letter-spacing="-2">
+    <tspan fill="#FFFFFF">A</tspan><tspan fill="#1E5EFF">Quiz</tspan>
+  </text>
+
+  <!-- tagline -->
+  <text x="640" y="304" text-anchor="middle" font-size="42" font-weight="800"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">
+    <tspan fill="#EDEDED">Live quizzes, </tspan><tspan fill="#8b5cf6">zero friction</tspan>
+  </text>
+
+  <!-- sub-tagline -->
+  <text x="640" y="344" text-anchor="middle" font-size="21" font-weight="600" fill="#9a9a9a"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">Create a quiz, share one link, and watch the leaderboard update live.</text>
+
+  <!-- feature chips -->
+  <g font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="19" font-weight="700">
+    <g>
+      <rect x="238" y="378" width="230" height="42" rx="21" fill="#8b5cf6" fill-opacity="0.10" stroke="#8b5cf6" stroke-opacity="0.55" />
+      <circle cx="268" cy="399" r="5" fill="#8b5cf6" />
+      <text x="286" y="405" fill="#d9d2ee">Live leaderboard</text>
+    </g>
+    <g>
+      <rect x="492" y="378" width="270" height="42" rx="21" fill="#1E5EFF" fill-opacity="0.10" stroke="#1E5EFF" stroke-opacity="0.50" />
+      <circle cx="522" cy="399" r="5" fill="#1E5EFF" />
+      <text x="540" y="405" fill="#cdd8ff">AI-generated quizzes</text>
+    </g>
+    <g>
+      <rect x="786" y="378" width="256" height="42" rx="21" fill="#10b981" fill-opacity="0.10" stroke="#10b981" stroke-opacity="0.50" />
+      <circle cx="816" cy="399" r="5" fill="#10b981" />
+      <text x="834" y="405" fill="#bfeedd">Guest join, no login</text>
+    </g>
+  </g>
+</svg>
